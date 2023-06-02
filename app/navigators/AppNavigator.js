@@ -8,24 +8,31 @@ import HomeTabActiveIcon from '../assets/svgs/HomeTabIconActive';
 import HomeTabIconInactive from '../assets/svgs/HomeTabIconInactive';
 import {colors} from '../utils/theme';
 import {FONTS} from '../utils/fonts';
-import {logToConsole} from '../configs/ReactotronConfig';
 import MessageTabIconActive from '../assets/svgs/MessageTabIconActive';
 import MessagesTabIconInactive from '../assets/svgs/MessagesTabIconInactive';
 import JobsTabIconActive from '../assets/svgs/JobTabIconActive';
 import JobsTabIconInActive from '../assets/svgs/JobsTabIconInActive';
 import FavouritesTabIconActive from '../assets/svgs/FavouritesTabIconActive';
 import FavouriteTabIconInActive from '../assets/svgs/FavouriteTabIconInActive';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {Platform, View} from 'react-native';
+import TextComponent from '../components/TextComponent/TextComponent';
+import {getFontSize, getMScale} from '../utils/metrics';
+import Touchable from '../components/Touchable/Touchable';
+import BellIcon from '../assets/svgs/BellIcon';
+import HomeScreenHeader from '../screens/HomeScreen/HomeScreenHeader';
 
 const AppNavigator = () => {
   const Tab = createBottomTabNavigator();
 
   const renderTabIcon = (isFocused, ActiveIcon, InActiveIcon) => {
-    logToConsole({isFocused})
     if (isFocused) {
       return <ActiveIcon />;
     }
     return <InActiveIcon />;
   };
+
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -38,6 +45,8 @@ const AppNavigator = () => {
         name={screens.HOME}
         component={HomeScreen}
         options={{
+          headerShown: true,
+          header: () => <HomeScreenHeader />,
           tabBarIcon: ({focused}) =>
             renderTabIcon(
               focused,

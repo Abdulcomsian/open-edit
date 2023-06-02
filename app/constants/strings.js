@@ -24,5 +24,17 @@ const strings = {
   resend: 'Resend',
   login_to_continue: 'Log in to continue',
   or_signin_with: 'Or Sign In With',
+  home_empty_list:
+    'To post a job, create a new folder. Add media in it like video clips, images, \n' +
+    'text files you wanted to add in your \n' +
+    'video and post the job ',
+  create_folder: 'Create Folder',
+  enter_folder_name: 'Enter folder name',
+  save: 'Save',
+  cancel: 'Cancel',
+  your_folders: 'Your Folders',
+  search: 'Search',
+  new: 'New',
+  jobs_posted: 'Jobs Posted',
 };
 export default strings;

@@ -28,5 +28,5 @@ export const getScale = (value = 10) => scale?.(value);
 export const getVerticalScale = (value = 10) => verticalScale?.(value);
 export const getMScale = (value = 10, factor) => moderateScale?.(value, factor);
 
-export const getFontSize = val => (isIos ? val : val - 2);
+export const getFontSize = val => (isIos ? val : val);
 

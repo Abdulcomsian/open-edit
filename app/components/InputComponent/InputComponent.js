@@ -34,7 +34,7 @@ const InputComponent = forwardRef(
       <View style={[styles.defaultInputContainer, containerStyle]}>
         <TextComponent font={'medium'} text={label} style={styles.label} />
         <View style={[styles.defaultInput, inputStyle]}>
-          <LeftIcon />
+          {LeftIcon ? <LeftIcon /> : null}
           <TextInput
             ref={inputRef}
             style={{
