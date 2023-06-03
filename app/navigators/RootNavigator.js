@@ -4,8 +4,12 @@ import AuthNavigator from './AuthNavigator';
 import useAuthSelector from '../redux/selectorHooks/useAuthSelector';
 import AppNavigator from './AppNavigator';
 import {useRef} from 'react';
-import { navigationRef } from "../utils/navigationUtils";
-import { logNavigationToConsole } from "../configs/ReactotronConfig";
+import {navigationRef} from '../utils/navigationUtils';
+import {logNavigationToConsole} from '../configs/ReactotronConfig';
+import screens from '../constants/screens';
+import FolderDetailScreen from '../screens/FolderDetailScreen/FolderDetailScreen';
+import HeadersMapper from './HeadersMapper';
+import FoldersStackNavigator from './FoldersStackNavigator';
 
 export const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
@@ -44,19 +48,17 @@ const RootNavigator = () => {
       ref={navigationRef}
       onReady={onReady}
       onStateChange={onStateChange}>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
         {!isLoggedIn ? (
-          <Stack.Screen
-            name={'Auth'}
-            component={AuthNavigator}
-            options={{headerShown: false}}
-          />
+          <Stack.Screen name={'Auth'} component={AuthNavigator} />
         ) : (
-          <Stack.Screen
-            name={'App'}
-            component={AppNavigator}
-            options={{headerShown: false}}
-          />
+          <>
+            <Stack.Screen name={'App'} component={AppNavigator} />
+            <Stack.Screen
+              name={screens.FOLDERS_STACK}
+              component={FoldersStackNavigator}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

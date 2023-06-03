@@ -13,4 +13,6 @@ export const colors = {
   black20: 'rgba(0,0,0,0.2)',
   border: 'rgba(217, 217, 217, 0.4)',
   error: 'red',
+  primaryBlue: '#4B99E9',
+  primary_30: 'rgba(255, 232, 232, 0.3)',
 };

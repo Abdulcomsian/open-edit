@@ -77,7 +77,9 @@ const styles = StyleSheet.create({
   //Jobs Item Card
   jobItemParent: {
     paddingVertical: getVerticalScale(25),
+    marginVertical: 10,
     paddingHorizontal: getMScale(15),
+    marginStart: getMScale(10),
     width: 330,
     backgroundColor: colors.white,
     borderRadius: 20,
@@ -133,6 +135,12 @@ const styles = StyleSheet.create({
     width: '40%',
     borderRadius: 15,
     height: '100%',
+  },
+  floatingAddButton: {
+    position: 'absolute',
+    right: 10,
+    bottom: 20,
+    zIndex: 22,
   },
 });
 export default styles;

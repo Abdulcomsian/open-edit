@@ -4,15 +4,22 @@ import reactotron from '../configs/ReactotronConfig';
 import {persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import persistedMediaReducer from './mediaSlice';
+import persistedJobsPostedReducer from './jobsPostedSlice';
+import persistedFoldersReducer from './foldersSlice';
+
+const rootReducer = combineReducers({
+  auth: persistedAuthReducer,
+  media: persistedMediaReducer,
+  jobsPosted: persistedJobsPostedReducer,
+  folders: persistedFoldersReducer,
+});
 
 const rootPersistConfig = {
   key: 'root',
   storage: AsyncStorage,
+  blacklist: ['media', 'folders'],
 };
-
-const rootReducer = combineReducers({
-  auth: persistedAuthReducer,
-});
 
 const rootPersistedReducer = persistReducer(rootPersistConfig, rootReducer);
 export const store = configureStore({

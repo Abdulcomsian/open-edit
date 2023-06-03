@@ -17,13 +17,18 @@ import ImageComponent from '../../components/ImageComponent/ImageComponent';
 import {images} from '../../assets';
 import CalendarIconSmall from '../../assets/svgs/CalendarIconSmall';
 import GoalIcon from '../../assets/svgs/GoalIcon';
+import {navigateTo} from '../../utils/navigationUtils';
+import screens from '../../constants/screens';
+import {useDispatch} from 'react-redux';
+import {createFolder, deleteFolder} from '../../redux/foldersSlice';
+import useFoldersSelector from '../../redux/selectorHooks/useFoldersSelector';
 
 const folders = [
   {
     id: 1,
     name: 'New Folder',
     type: 'new',
-    items: [
+    media: [
       {
         id: '21',
         fileType: 'video',
@@ -73,27 +78,37 @@ const jobsPosted = [
   },
 ];
 const HomeScreen = () => {
-  const [foldersData, setFoldersData] = useState(folders);
   const [isVisibleDialog, setIsVisibleDialog] = useState(false);
   const [searchValue, setSearchVal] = useState('');
 
   const showDialog = useCallback(() => setIsVisibleDialog(true), []);
   const closeDialog = useCallback(() => setIsVisibleDialog(false), []);
 
+  const dispatch = useDispatch();
+  const {folders: foldersData} = useFoldersSelector();
+
   const onAddNewFolder = name => {
     closeDialog();
     const dummyItem = {
-      id: new Date(),
+      id: new Date().getTime(),
       name,
       type: 'new',
-      items: [],
+      media: [],
     };
-    setFoldersData(prevState => [dummyItem, ...prevState]);
+    dispatch(createFolder({...dummyItem}));
   };
   const renderFolderItems = ({item, index}) => {
-    const {name, items, createdDate = new Date(), type} = item || {};
+    const {id, name, media, createdDate = new Date(), type} = item || {};
     return (
-      <Touchable style={styles.itemParent}>
+      <Touchable
+        style={styles.itemParent}
+        onPress={() =>
+          navigateTo(screens.FOLDERS_STACK, {
+            screen: screens.FOLDER_DETAIL,
+            params: {folder: item},
+          })
+        }
+        onLongPress={() => dispatch(deleteFolder(id))}>
         <FolderIcon />
         <View style={styles.nameDescriptionView}>
           <View style={styles.nameView}>
@@ -105,7 +120,7 @@ const HomeScreen = () => {
             ) : null}
           </View>
           <TextComponent style={styles.dateAndItemsCount}>
-            {dayjs(createdDate).format('DD.MM.YYYY')} - {items.length} Items
+            {dayjs(createdDate).format('DD.MM.YYYY')} - {media?.length} Items
           </TextComponent>
         </View>
         <ChevronForward />
@@ -165,7 +180,7 @@ const HomeScreen = () => {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{flex: 1, paddingVertical: 20, paddingStart: 10}}>
+          style={{flex: 1}}>
           {jobsPosted.map(renderJobsPosted)}
         </ScrollView>
         <View style={styles.listHeaderParent}>
@@ -208,14 +223,7 @@ const HomeScreen = () => {
   const renderFloatingIcon = () => {
     if (foldersData.length > 0) {
       return (
-        <Touchable
-          onPress={showDialog}
-          style={{
-            position: 'absolute',
-            right: 10,
-            bottom: 20,
-            zIndex: 22,
-          }}>
+        <Touchable onPress={showDialog} style={styles.floatingAddButton}>
           <FloatingAddIcon />
         </Touchable>
       );
@@ -237,6 +245,7 @@ const HomeScreen = () => {
       </View>
       <FlatList
         data={foldersData}
+        showsVerticalScrollIndicator={false}
         renderItem={renderFolderItems}
         ListHeaderComponent={renderListHeader}
         ItemSeparatorComponent={renderItemSeparator}

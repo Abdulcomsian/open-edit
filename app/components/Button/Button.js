@@ -12,6 +12,7 @@ const Button = ({
   backgroundColor = colors.primary,
   titleColor = colors.white,
   variant = 'filled',
+  disabled,
 }) => {
   const baseStyles = {
     filled: styles.defaultButton,
@@ -20,7 +21,7 @@ const Button = ({
   return (
     <Touchable
       onPress={onPress}
-      style={[{backgroundColor}, baseStyles[variant], style]}>
+      style={[{backgroundColor: disabled ? colors.black20 : backgroundColor}, baseStyles[variant], style]}>
       <TextComponent
         text={title}
         font={'semiBold'}
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
+    alignSelf: 'center',
   },
   outlinedStyle: {
     borderColor: colors.white,

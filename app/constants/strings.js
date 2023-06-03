@@ -36,5 +36,11 @@ const strings = {
   search: 'Search',
   new: 'New',
   jobs_posted: 'Jobs Posted',
+  add_media: 'Add Media',
+  post_job: 'Post Job',
+  gallery: 'Gallery',
+  camera: 'Camera',
+  select_source: 'Select Source',
+  continue: 'Continue'
 };
 export default strings;

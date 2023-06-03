@@ -21,6 +21,7 @@ import {getFontSize, getMScale} from '../utils/metrics';
 import Touchable from '../components/Touchable/Touchable';
 import BellIcon from '../assets/svgs/BellIcon';
 import HomeScreenHeader from '../screens/HomeScreen/HomeScreenHeader';
+import HomeStackNavigator from "./HomeStackNavigator";
 
 const AppNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -42,11 +43,9 @@ const AppNavigator = () => {
         tabBarLabelStyle: {fontFamily: FONTS.REGULAR, fontSize: 12},
       }}>
       <Tab.Screen
-        name={screens.HOME}
-        component={HomeScreen}
+        name={screens.HOME_STACK}
+        component={HomeStackNavigator}
         options={{
-          headerShown: true,
-          header: () => <HomeScreenHeader />,
           tabBarIcon: ({focused}) =>
             renderTabIcon(
               focused,
