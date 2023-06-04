@@ -1,10 +1,10 @@
 import {View} from 'react-native';
 import {
   getFontSize,
-  getMScale,
+  getMScale, getSafeAreaPadding,
   getVerticalScale,
   SCREEN_WIDTH,
-} from '../../utils/metrics';
+} from "../../utils/metrics";
 import {colors} from '../../utils/theme';
 import Touchable from '../../components/Touchable/Touchable';
 import {goBack} from '../../utils/navigationUtils';
@@ -13,13 +13,13 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ChevronLeft from '../../assets/svgs/ChevronLeft';
 import TextComponent from '../TextComponent/TextComponent';
 
-const ScreenHeader = ({title, withRightIcon}) => {
+const ScreenHeader = ({title, RightIcon, onRightIconPress}) => {
   const {top} = useSafeAreaInsets();
 
   return (
     <View
       style={{
-        paddingTop: top + 20,
+        paddingTop: getSafeAreaPadding(top),
         paddingBottom: getVerticalScale(20),
         width: SCREEN_WIDTH,
         backgroundColor: colors.white,
@@ -34,9 +34,9 @@ const ScreenHeader = ({title, withRightIcon}) => {
       <TextComponent font={'semiBold'} style={{fontSize: getFontSize(18)}}>
         {title}
       </TextComponent>
-      {withRightIcon ? (
-        <Touchable>
-          <MenuHorizontal />
+      {RightIcon ? (
+        <Touchable onPress={onRightIconPress}>
+          <RightIcon />
         </Touchable>
       ) : (
         <Touchable style={{width: 30}} />

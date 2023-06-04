@@ -41,6 +41,9 @@ const strings = {
   gallery: 'Gallery',
   camera: 'Camera',
   select_source: 'Select Source',
-  continue: 'Continue'
+  continue: 'Continue',
+  i_want_quick_delivery: 'I want quick delivery',
+  deadline: 'Deadline',
+  budget: 'Budget',
 };
 export default strings;

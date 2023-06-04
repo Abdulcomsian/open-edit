@@ -30,3 +30,4 @@ export const getMScale = (value = 10, factor) => moderateScale?.(value, factor);
 
 export const getFontSize = val => (isIos ? val : val);
 
+export const getSafeAreaPadding = top => (isIos ? top + 20 : top + 10);

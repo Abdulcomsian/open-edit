@@ -1,4 +1,4 @@
-import {getFontSize, getMScale} from '../../utils/metrics';
+import { getFontSize, getMScale, getSafeAreaPadding } from "../../utils/metrics";
 import {Platform, View} from 'react-native';
 import TextComponent from '../../components/TextComponent/TextComponent';
 import {FONTS} from '../../utils/fonts';
@@ -17,14 +17,7 @@ const HomeScreenHeader = () => {
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: colors.white,
-        ...Platform.select({
-          ios: {
-            paddingTop: top,
-          },
-          android: {
-            paddingTop: top + 10,
-          },
-        }),
+        paddingTop: getSafeAreaPadding(20),
       }}>
       <View>
         <TextComponent style={{color: '#A2A2A2'}}>

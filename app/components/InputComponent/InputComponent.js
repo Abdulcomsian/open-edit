@@ -4,6 +4,7 @@ import {colors} from '../../utils/theme';
 import {getFontSize, getMScale, getVerticalScale} from '../../utils/metrics';
 import {forwardRef, useImperativeHandle, useRef} from 'react';
 import {FONTS} from '../../utils/fonts';
+import Touchable from '../Touchable/Touchable';
 
 const InputComponent = forwardRef(
   (
@@ -14,9 +15,10 @@ const InputComponent = forwardRef(
       label,
       placeholder,
       onChangeText,
-      key,
       LeftIcon,
       SkillComponent,
+      editable = true,
+      onInputPress,
       ...rest
     },
     ref,
@@ -31,12 +33,15 @@ const InputComponent = forwardRef(
       blur,
     }));
 
+    const InputWrapper = !editable ? Touchable : View;
     return (
       <View style={[styles.defaultInputContainer, containerStyle]}>
         {label ? (
           <TextComponent font={'medium'} text={label} style={styles.label} />
         ) : null}
-        <View style={[styles.defaultInput, inputStyle]}>
+        <InputWrapper
+          onPress={onInputPress}
+          style={[styles.defaultInput, inputStyle]}>
           {LeftIcon ? <LeftIcon /> : null}
           <TextInput
             ref={inputRef}
@@ -50,9 +55,10 @@ const InputComponent = forwardRef(
             onChangeText={onChangeText}
             placeholder={placeholder}
             placeholderTextColor={colors.textSecondary}
+            editable={editable}
             {...rest}
           />
-        </View>
+        </InputWrapper>
       </View>
     );
   },

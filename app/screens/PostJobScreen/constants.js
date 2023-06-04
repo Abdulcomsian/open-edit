@@ -113,5 +113,7 @@ export const inputs = [
     placeholder: 'DD/MM/YYYY',
     keyboardType: 'number-pad',
     returnKeyType: 'done',
+    editable: false,
+    pointerEvents: 'none',
   },
 ];

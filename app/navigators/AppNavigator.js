@@ -14,14 +14,8 @@ import JobsTabIconActive from '../assets/svgs/JobTabIconActive';
 import JobsTabIconInActive from '../assets/svgs/JobsTabIconInActive';
 import FavouritesTabIconActive from '../assets/svgs/FavouritesTabIconActive';
 import FavouriteTabIconInActive from '../assets/svgs/FavouriteTabIconInActive';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Platform, View} from 'react-native';
-import TextComponent from '../components/TextComponent/TextComponent';
-import {getFontSize, getMScale} from '../utils/metrics';
-import Touchable from '../components/Touchable/Touchable';
-import BellIcon from '../assets/svgs/BellIcon';
-import HomeScreenHeader from '../screens/HomeScreen/HomeScreenHeader';
-import HomeStackNavigator from "./HomeStackNavigator";
+import HomeStackNavigator from './HomeStackNavigator';
+import HeadersMapper from './HeadersMapper';
 
 const AppNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -32,7 +26,6 @@ const AppNavigator = () => {
     }
     return <InActiveIcon />;
   };
-
 
   return (
     <Tab.Navigator
@@ -46,6 +39,7 @@ const AppNavigator = () => {
         name={screens.HOME_STACK}
         component={HomeStackNavigator}
         options={{
+          tabBarLabel: 'Home',
           tabBarIcon: ({focused}) =>
             renderTabIcon(
               focused,
@@ -70,6 +64,8 @@ const AppNavigator = () => {
         name={screens.JOBS}
         component={JobsScreen}
         options={{
+          headerShown: true,
+          header: ({route}) => <HeadersMapper route={route} />,
           tabBarIcon: ({focused}) =>
             renderTabIcon(
               focused,

@@ -230,7 +230,7 @@ const FolderDetailScreen = ({route}) => {
       <View style={[styles.bottomView, {paddingBottom: bottom + 10}]}>
         <Button
           title={strings.post_job}
-          onPress={() => navigateTo(screens.POST_JOB)}
+          onPress={() => navigateTo(screens.POST_JOB, {id})}
           disabled={currentFolder?.media?.length === 0}
         />
       </View>

@@ -1,5 +1,5 @@
 import {View} from 'react-native';
-import {getMScale, getVerticalScale, SCREEN_WIDTH} from '../../utils/metrics';
+import { getMScale, getSafeAreaPadding, getVerticalScale, SCREEN_WIDTH } from "../../utils/metrics";
 import {colors} from '../../utils/theme';
 import Touchable from '../../components/Touchable/Touchable';
 import {goBack} from '../../utils/navigationUtils';
@@ -12,7 +12,7 @@ const FolderDetailHeader = () => {
   return (
     <View
       style={{
-        paddingTop: top + 20,
+        paddingTop: getSafeAreaPadding(top),
         paddingBottom: getVerticalScale(20),
         width: SCREEN_WIDTH,
         backgroundColor: colors.white,

@@ -1,3 +1,4 @@
+import React from 'react';
 import {FlatList, ScrollView, TextInput, View} from 'react-native';
 import TextComponent from '../../components/TextComponent/TextComponent';
 import Touchable from '../../components/Touchable/Touchable';
@@ -13,70 +14,14 @@ import {useCallback, useState} from 'react';
 import FloatingAddIcon from '../../assets/svgs/AddIcon';
 import styles from './styles';
 import CreateFolderDialog from './CreateFolderDialog';
-import ImageComponent from '../../components/ImageComponent/ImageComponent';
-import {images} from '../../assets';
-import CalendarIconSmall from '../../assets/svgs/CalendarIconSmall';
-import GoalIcon from '../../assets/svgs/GoalIcon';
 import {navigateTo} from '../../utils/navigationUtils';
 import screens from '../../constants/screens';
 import {useDispatch} from 'react-redux';
 import {createFolder, deleteFolder} from '../../redux/foldersSlice';
 import useFoldersSelector from '../../redux/selectorHooks/useFoldersSelector';
+import useJobSelector from '../../redux/selectorHooks/useJobSelector';
+import JobsItemCard from '../../components/JobsItemCard/JobsItemCard';
 
-const folders = [
-  {
-    id: 1,
-    name: 'New Folder',
-    type: 'new',
-    media: [
-      {
-        id: '21',
-        fileType: 'video',
-        fileName: 'My Video',
-      },
-      {
-        id: '212',
-        fileType: 'image',
-        fileName: 'My Image',
-      },
-      {
-        id: '221',
-        fileType: 'video',
-        fileName: 'My Video',
-      },
-    ],
-  },
-];
-const jobsPosted = [
-  {
-    id: '21',
-    description: 'Lorem ipsum dolor sit amet consectetur.',
-    price: 20,
-    start: dayjs(new Date()),
-    end: dayjs(new Date()).add(8, 'days'),
-  },
-  {
-    id: '22',
-    description: 'Lorem ipsum dolor sit amet consectetur.',
-    price: 30,
-    start: dayjs(new Date()),
-    end: dayjs(new Date()).add(8, 'days'),
-  },
-  {
-    id: '23',
-    description: 'Lorem ipsum dolor sit amet consectetur.',
-    price: 10,
-    start: dayjs(new Date()),
-    end: dayjs(new Date()).add(8, 'days'),
-  },
-  {
-    id: '24',
-    description: 'Lorem ipsum dolor sit amet consectetur.',
-    price: 50,
-    start: dayjs(new Date()),
-    end: dayjs(new Date()).add(8, 'days'),
-  },
-];
 const HomeScreen = () => {
   const [isVisibleDialog, setIsVisibleDialog] = useState(false);
   const [searchValue, setSearchVal] = useState('');
@@ -86,6 +31,7 @@ const HomeScreen = () => {
 
   const dispatch = useDispatch();
   const {folders: foldersData} = useFoldersSelector();
+  const {jobsPosted} = useJobSelector();
 
   const onAddNewFolder = name => {
     closeDialog();
@@ -97,7 +43,7 @@ const HomeScreen = () => {
     };
     dispatch(createFolder({...dummyItem}));
   };
-  const renderFolderItems = ({item, index}) => {
+  const renderFolderItems = ({item}) => {
     const {id, name, media, createdDate = new Date(), type} = item || {};
     return (
       <Touchable
@@ -128,59 +74,22 @@ const HomeScreen = () => {
     );
   };
 
-  const renderJobsPosted = (item, index) => {
-    const {id, price, description, start, end} = item || {};
-    return (
-      <View key={String(id)} style={styles.jobItemParent}>
-        <View style={styles.profileAndPriceView}>
-          <ImageComponent
-            source={images.dummy_profile}
-            style={styles.profileIcon}
-          />
-          <TextComponent font={'bold'} style={styles.priceText}>
-            ${price}
-          </TextComponent>
-        </View>
-        <TextComponent font={'semiBold'} style={styles.jobDescriptionText}>
-          {description}
-        </TextComponent>
-        <View style={styles.jobDurationView}>
-          <View style={styles.jobDurationPortion}>
-            <CalendarIconSmall />
-            <TextComponent style={styles.jobStartText}>
-              Start:{' '}
-              <TextComponent style={styles.jobStartTime}>
-                {dayjs(start).format('DD MMM')}
-              </TextComponent>
-            </TextComponent>
-          </View>
-          <View style={styles.jobDurationPortion}>
-            <GoalIcon />
-            <TextComponent style={styles.jobStartText}>
-              End:{' '}
-              <TextComponent style={styles.jobStartTime}>
-                {dayjs(end).format('DD MMM')}
-              </TextComponent>
-            </TextComponent>
-          </View>
-        </View>
-        <View style={styles.progressBar}>
-          <View style={styles.activeProgress} />
-        </View>
-      </View>
-    );
+  const renderJobsPosted = item => {
+    return <JobsItemCard item={item} key={item.id} />;
   };
 
   const renderListHeader = () => {
     return (
       <View>
-        <TextComponent font={'semiBold'} style={styles.listHeaderText}>
-          {strings.jobs_posted}
-        </TextComponent>
+        {jobsPosted.length > 0 ? (
+          <TextComponent font={'semiBold'} style={styles.listHeaderText}>
+            {strings.jobs_posted}
+          </TextComponent>
+        ) : null}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          style={{flex: 1}}>
+          style={styles.horizontalScrollStyle}>
           {jobsPosted.map(renderJobsPosted)}
         </ScrollView>
         <View style={styles.listHeaderParent}>

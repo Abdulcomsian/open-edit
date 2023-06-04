@@ -21,7 +21,11 @@ const Button = ({
   return (
     <Touchable
       onPress={onPress}
-      style={[{backgroundColor: disabled ? colors.black20 : backgroundColor}, baseStyles[variant], style]}>
+      style={[
+        {backgroundColor: disabled ? colors.black20 : backgroundColor},
+        baseStyles[variant],
+        style,
+      ]}>
       <TextComponent
         text={title}
         font={'semiBold'}

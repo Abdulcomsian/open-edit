@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {colors} from '../../utils/theme';
 import TextComponent from '../../components/TextComponent/TextComponent';
 import {getVerticalScale} from '../../utils/metrics';
@@ -16,18 +16,19 @@ const CreateFolderDialog = ({
 }) => {
   const [folderName, setFolderName] = useState('');
 
+  const handleConfirmPress = () => {
+    setFolderName('');
+    onConfirmPress?.(folderName);
+  };
+
+  const handleCancelPress = () => {
+    setFolderName('');
+    onCancelPress?.();
+  };
   return (
     <Dialog isVisible={isVisible} onClose={onClose}>
-      <View
-        style={{
-          marginHorizontal: 10,
-          backgroundColor: colors.white,
-          alignItems: 'center',
-          borderRadius: 20,
-        }}>
-        <TextComponent
-          font={'semiBold'}
-          style={{marginTop: getVerticalScale(20)}}>
+      <View style={styles.parent}>
+        <TextComponent font={'semiBold'} style={styles.title}>
           {strings.create_folder}
         </TextComponent>
         <InputComponent
@@ -35,44 +36,17 @@ const CreateFolderDialog = ({
           placeholder={strings.enter_folder_name}
           value={folderName}
           onChangeText={setFolderName}
-          containerStyle={{
-            marginTop: getVerticalScale(30),
-            paddingHorizontal: 10,
-          }}
+          containerStyle={styles.inputContainer}
         />
-        <View
-          style={{
-            borderTopWidth: 1,
-            borderTopColor: colors.border,
-            alignItems: 'center',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: getVerticalScale(40),
-          }}>
-          <Touchable
-            onPress={onCancelPress}
-            style={{
-              width: '49%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingVertical: getVerticalScale(11),
-            }}>
+        <View style={styles.buttonsView}>
+          <Touchable onPress={handleCancelPress} style={styles.singleButton}>
             <TextComponent text={'Cancel'} style={{color: colors.black}} />
           </Touchable>
-          <View
-            style={{height: '100%', width: 1, backgroundColor: colors.border}}
-          />
-          <Touchable
-            onPress={() => onConfirmPress(folderName)}
-            style={{
-              width: '50%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingVertical: getVerticalScale(11),
-            }}>
+          <View style={styles.verticalLine} />
+          <Touchable onPress={handleConfirmPress} style={styles.rightButton}>
             <TextComponent
               font={'semiBold'}
-              style={{color: colors.primary}}
+              style={styles.confirmButtontitle}
               text={'Save'}
             />
           </Touchable>
@@ -81,4 +55,40 @@ const CreateFolderDialog = ({
     </Dialog>
   );
 };
+
+const styles = StyleSheet.create({
+  parent: {
+    marginHorizontal: 10,
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    borderRadius: 20,
+  },
+  title: {marginTop: getVerticalScale(20)},
+  inputContainer: {
+    marginTop: getVerticalScale(30),
+    paddingHorizontal: 10,
+  },
+  buttonsView: {
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: getVerticalScale(40),
+  },
+  singleButton: {
+    width: '49%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: getVerticalScale(11),
+  },
+  verticalLine: {height: '100%', width: 1, backgroundColor: colors.border},
+  rightButton: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: getVerticalScale(11),
+  },
+  confirmButtontitle: {color: colors.primary},
+});
 export default CreateFolderDialog;
