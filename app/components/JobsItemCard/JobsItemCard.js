@@ -7,10 +7,10 @@ import TextComponent from '../TextComponent/TextComponent';
 import CalendarIconSmall from '../../assets/svgs/CalendarIconSmall';
 import GoalIcon from '../../assets/svgs/GoalIcon';
 
-const JobsItemCard = ({item}) => {
+const JobsItemCard = ({item, containerStyle}) => {
   const {id, price, description, title, start, deadline: end} = item || {};
   return (
-    <View key={String(id)} style={styles.jobItemParent}>
+    <View key={String(id)} style={[styles.jobItemParent, containerStyle]}>
       <View style={styles.profileAndPriceView}>
         <ImageComponent
           source={images.dummy_profile}

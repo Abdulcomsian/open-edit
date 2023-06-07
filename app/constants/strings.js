@@ -45,5 +45,7 @@ const strings = {
   i_want_quick_delivery: 'I want quick delivery',
   deadline: 'Deadline',
   budget: 'Budget',
+  no_jobs_posted: 'No active job posts',
+  no_jobs_description: 'Lorem ipsum dolor sit amet consectetur. Pellentesque ut risus et viverra nec orci conse pharetra euismod.',
 };
 export default strings;

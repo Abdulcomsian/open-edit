@@ -116,7 +116,7 @@ const FolderDetailScreen = ({route}) => {
             </Touchable>
           );
         })}
-        <TabIndicator activeTab={activeIndex} />
+        <TabIndicator activeTab={activeIndex} totalTabs={tabOptions.length} tabWidth={70} />
       </View>
     );
   };
