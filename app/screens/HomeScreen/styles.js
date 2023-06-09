@@ -14,17 +14,7 @@ const styles = StyleSheet.create({
     paddingVertical: getMScale(10),
     backgroundColor: colors.white,
   },
-  searchBarView: {
-    width: '100%',
-    flexDirection: 'row',
-    backgroundColor: '#EBEBEB',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    borderRadius: 44,
-    height: getVerticalScale(55),
-    paddingHorizontal: 16,
-  },
-  searchInput: {marginStart: getMScale(6)},
+
   listHeaderParent: {
     flexDirection: 'row',
     justifyContent: 'space-between',

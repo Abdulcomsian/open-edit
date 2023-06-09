@@ -3,7 +3,7 @@ import {colors} from '../../utils/theme';
 import {useMemo} from 'react';
 import {FONTS} from '../../utils/fonts';
 
-const TextComponent = ({text, children, font, style, onPress}) => {
+const TextComponent = ({text, children, font, style, onPress, numberOfLines, ...rest}) => {
   const fontFamily = useMemo(() => {
     switch (font) {
       case 'regular':
@@ -24,7 +24,7 @@ const TextComponent = ({text, children, font, style, onPress}) => {
   }, [font]);
 
   return (
-    <Text onPress={onPress} style={[styles.default, {...fontFamily}, style]}>
+    <Text onPress={onPress} numberOfLines={numberOfLines} style={[styles.default, {...fontFamily}, style]} {...rest}>
       {text || children}
     </Text>
   );

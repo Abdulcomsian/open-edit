@@ -9,7 +9,6 @@ import ArrowLeft from '../assets/svgs/ArrowLeft';
 import {goBack} from '../utils/navigationUtils';
 import {colors} from '../utils/theme';
 import { getMScale, getSafeAreaPadding } from "../utils/metrics";
-import {isIos} from '../utils/sharedUtils';
 import VerificationCode from '../screens/VerificationCodeScreen/VerificationCode';
 
 const AuthNavigator = () => {

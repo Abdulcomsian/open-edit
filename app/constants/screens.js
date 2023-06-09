@@ -11,5 +11,6 @@ const screens = {
   FOLDER_DETAIL: 'FolderDetail',
   POST_JOB: 'Post job',
   REVIEW_DETAILS: 'Review Details',
+  CREATE_PROFILE: 'Create Profile',
 };
 export default screens;

@@ -9,10 +9,14 @@ import {colors} from '../../utils/theme';
 import Touchable from '../../components/Touchable/Touchable';
 import {navigateTo} from '../../utils/navigationUtils';
 import screens from '../../constants/screens';
+import {setUserType} from '../../redux/authSlice';
+import {useDispatch} from 'react-redux';
 
 const LandingScreen = () => {
+  const dispatch = useDispatch();
   const navigateToAuthScreen = (userType, activeIndex) => {
     navigateTo(screens.AUTH_SCREEN, {userType, activeIndex});
+    dispatch(setUserType(userType));
   };
 
   return (

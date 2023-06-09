@@ -17,13 +17,9 @@ const VerificationCode = () => {
   const resendVerificationCode = () => countDownRef?.current?.startCountDown();
 
   const dispatch = useDispatch();
-  const route = useRoute();
-
-  const {userType} = route.params || {};
 
   const verifyCodeAndSignup = () => {
     dispatch(setLoggedIn(true));
-    dispatch(setUserType(userType));
   };
   const renderCodeField = () => {
     return (

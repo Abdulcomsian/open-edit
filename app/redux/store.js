@@ -7,12 +7,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import persistedMediaReducer from './mediaSlice';
 import persistedJobsPostedReducer from './jobsPostedSlice';
 import persistedFoldersReducer from './foldersSlice';
+import persistedUser from './userSlice';
 
 const rootReducer = combineReducers({
   auth: persistedAuthReducer,
   media: persistedMediaReducer,
   jobsPosted: persistedJobsPostedReducer,
   folders: persistedFoldersReducer,
+  user: persistedUser,
 });
 
 const rootPersistConfig = {

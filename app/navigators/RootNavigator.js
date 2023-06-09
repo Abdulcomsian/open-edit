@@ -7,13 +7,16 @@ import {useRef} from 'react';
 import {navigationRef} from '../utils/navigationUtils';
 import {logNavigationToConsole} from '../configs/ReactotronConfig';
 import screens from '../constants/screens';
-import FolderDetailScreen from '../screens/FolderDetailScreen/FolderDetailScreen';
-import HeadersMapper from './HeadersMapper';
+
 import FoldersStackNavigator from './FoldersStackNavigator';
+import useUserSelector from '../redux/selectorHooks/useUserSelector';
+import CreateEditorProfile from '../screens/CreateEditorProfile/CreateEditorProfile';
+import CreateProfileHeader from '../components/CreateProfileHeader/CreateProfileHeader';
 
 export const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
-  const {isLoggedIn = false} = useAuthSelector();
+  const {isLoggedIn = false, userType = ''} = useAuthSelector();
+  const {user} = useUserSelector();
 
   const routeNameRef = useRef(null);
   const onReady = () => {
@@ -53,11 +56,24 @@ const RootNavigator = () => {
           <Stack.Screen name={'Auth'} component={AuthNavigator} />
         ) : (
           <>
-            <Stack.Screen name={'App'} component={AppNavigator} />
-            <Stack.Screen
-              name={screens.FOLDERS_STACK}
-              component={FoldersStackNavigator}
-            />
+            {userType === 'editor' && Object.keys(user).length === 0 ? (
+              <Stack.Screen
+                name={screens.CREATE_PROFILE}
+                component={CreateEditorProfile}
+                options={{
+                  headerShown: true,
+                  header: ({route}) => <CreateProfileHeader route={route} />,
+                }}
+              />
+            ) : (
+              <>
+                <Stack.Screen name={'App'} component={AppNavigator} />
+                <Stack.Screen
+                  name={screens.FOLDERS_STACK}
+                  component={FoldersStackNavigator}
+                />
+              </>
+            )}
           </>
         )}
       </Stack.Navigator>

@@ -21,6 +21,7 @@ import {createFolder, deleteFolder} from '../../redux/foldersSlice';
 import useFoldersSelector from '../../redux/selectorHooks/useFoldersSelector';
 import useJobSelector from '../../redux/selectorHooks/useJobSelector';
 import JobsItemCard from '../../components/JobsItemCard/JobsItemCard';
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 const HomeScreen = () => {
   const [isVisibleDialog, setIsVisibleDialog] = useState(false);
@@ -141,17 +142,7 @@ const HomeScreen = () => {
   };
   return (
     <View style={styles.parent}>
-      <View style={styles.searchBarView}>
-        <SearchIcon />
-        <TextInput
-          placeholder={'Search'}
-          placeholderTextColor={colors.black50}
-          style={styles.searchInput}
-          value={searchValue}
-          onChangeText={setSearchVal}
-          returnKeyLabel={strings.search}
-        />
-      </View>
+      <SearchBar value={searchValue} onChangeText={setSearchVal} />
       <FlatList
         data={foldersData}
         showsVerticalScrollIndicator={false}

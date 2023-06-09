@@ -27,6 +27,8 @@ const HeadersMapper = ({route}) => {
           />
         );
       case screens.JOBS:
+      case screens.FAVOURITES:
+      case screens.MESSAGES:
         return <JobsScreenHeader route={route} />;
       default:
         return null;

@@ -1,16 +1,15 @@
+import React from 'react';
 import {Animated, View} from 'react-native';
 import styles from './styles';
 import useJobSelector from '../../redux/selectorHooks/useJobSelector';
-import {
-  getFontSize,
-  SCREEN_WIDTH,
-} from '../../utils/metrics';
+import {getFontSize, SCREEN_WIDTH} from '../../utils/metrics';
 import TextComponent from '../../components/TextComponent/TextComponent';
 import {colors} from '../../utils/theme';
 import Touchable from '../../components/Touchable/Touchable';
 import TabIndicator from '../FolderDetailScreen/TabIndicator';
 import {useRef, useState} from 'react';
 import JobsPosted from './JobsPosted';
+import JobsRequests from './JobsRequests';
 
 const jobTabs = [
   {
@@ -23,7 +22,7 @@ const jobTabs = [
     id: '2',
     title: 'Requests',
     key: 'requests',
-    Page: JobsPosted,
+    Page: JobsRequests,
   },
 ];
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import useJobSelector from '../../redux/selectorHooks/useJobSelector';
 import {FlatList, View} from 'react-native';
 import ImageComponent from '../../components/ImageComponent/ImageComponent';
@@ -68,4 +69,4 @@ const JobsPosted = () => {
     </View>
   );
 };
-export default JobsPosted;
+export default React.memo(JobsPosted);

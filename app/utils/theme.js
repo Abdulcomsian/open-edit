@@ -15,4 +15,8 @@ export const colors = {
   error: 'red',
   primaryBlue: '#4B99E9',
   primary_30: 'rgba(255, 232, 232, 0.3)',
+  primary_12: 'rgba(255, 232, 232, 0.12)',
+  disabled: '#ADB5BD',
+  neutralWeak: '#A4A4A4',
+  success: '#2CC069'
 };

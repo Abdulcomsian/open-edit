@@ -30,10 +30,11 @@ const AppNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: '#40577D',
         tabBarLabelStyle: {fontFamily: FONTS.REGULAR, fontSize: 12},
+        header: ({route}) => <HeadersMapper route={route} />,
       }}>
       <Tab.Screen
         name={screens.HOME_STACK}
@@ -64,8 +65,6 @@ const AppNavigator = () => {
         name={screens.JOBS}
         component={JobsScreen}
         options={{
-          headerShown: true,
-          header: ({route}) => <HeadersMapper route={route} />,
           tabBarIcon: ({focused}) =>
             renderTabIcon(
               focused,
