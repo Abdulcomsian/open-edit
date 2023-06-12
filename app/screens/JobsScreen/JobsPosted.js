@@ -58,7 +58,7 @@ const JobsPosted = () => {
   };
 
   return (
-    <View style={{flex: 1, width: SCREEN_WIDTH, paddingHorizontal: 10}}>
+    <View style={{flex: 1, width: SCREEN_WIDTH, paddingHorizontal: 10, marginTop: getVerticalScale(20)}}>
       <FlatList
         data={jobsPosted}
         contentContainerStyle={{flex: 1}}

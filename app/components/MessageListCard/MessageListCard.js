@@ -5,9 +5,10 @@ import ImageComponent from '../ImageComponent/ImageComponent';
 import {images} from '../../assets';
 import {colors} from '../../utils/theme';
 import TextComponent from '../TextComponent/TextComponent';
-import {getFontSize} from '../../utils/metrics';
+import { getFontSize, getVerticalScale } from "../../utils/metrics";
 import dayjs from 'dayjs';
 import ReadIndicator from '../../assets/svgs/ReadIndicator';
+import { isIos } from "../../utils/sharedUtils";
 
 const MessageListCard = ({item}) => {
   return (
@@ -72,6 +73,7 @@ const styles = StyleSheet.create({
   rightView: {
     width: '85%',
     alignItems: 'flex-start',
+    marginStart: getVerticalScale(10),
   },
   nameAndTimeView: {
     flexDirection: 'row',
@@ -91,12 +93,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 5,
+    marginTop: isIos ? 5 : 0,
   },
   lastMessageText: {
     fontSize: getFontSize(12),
     color: colors.disabled,
-    width: '95%',
+    width: '90%',
   },
   unreadCountView: {
     width: 20,

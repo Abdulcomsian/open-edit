@@ -4,6 +4,7 @@ import {colors} from '../../utils/theme';
 import strings from '../../constants/strings';
 import React from 'react';
 import {getMScale, getVerticalScale} from '../../utils/metrics';
+import {FONTS} from '../../utils/fonts';
 
 const SearchBar = ({value, onChangeText}) => {
   return (
@@ -31,6 +32,13 @@ const styles = StyleSheet.create({
     height: getVerticalScale(55),
     paddingHorizontal: 16,
   },
-  searchInput: {marginStart: getMScale(6)},
+  searchInput: {
+    marginStart: getMScale(6),
+    color: colors.textPrimary,
+    width: '90%',
+    top: 2,
+    marginEnd: getMScale(10),
+    fontFamily: FONTS.REGULAR,
+  },
 });
 export default React.memo(SearchBar);

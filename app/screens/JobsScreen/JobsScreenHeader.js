@@ -13,6 +13,7 @@ import MenuHorizontal from '../../assets/svgs/MenuHorizontal';
 import screens from '../../constants/screens';
 import {colors} from '../../utils/theme';
 import NewChatIcon from '../../assets/svgs/NewChatIcon';
+import { isIos } from "../../utils/sharedUtils";
 
 const JobsScreenHeader = ({route}) => {
   const {name} = route || {};
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignItems: 'center',
     flexDirection: 'row',
-    paddingBottom: 20,
+    paddingBottom: isIos ? 20 : 10,
     justifyContent: 'space-between',
     paddingHorizontal: getMScale(15),
   },

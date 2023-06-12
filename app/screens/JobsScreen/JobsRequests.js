@@ -67,7 +67,7 @@ const JobsRequests = () => {
     return <JobRequestCard item={item} />;
   };
   return (
-    <View style={{flex: 1, width: SCREEN_WIDTH, paddingHorizontal: 10}}>
+    <View style={{flex: 1, width: SCREEN_WIDTH, paddingHorizontal: 10, marginTop: getVerticalScale(20)}}>
       <FlatList
         data={jobRequests}
         contentContainerStyle={{flex: 1}}

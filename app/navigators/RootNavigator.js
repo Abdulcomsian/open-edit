@@ -56,7 +56,7 @@ const RootNavigator = () => {
           <Stack.Screen name={'Auth'} component={AuthNavigator} />
         ) : (
           <>
-            {userType === 'editor' && Object.keys(user).length === 0 ? (
+            {userType === 'editor' && !user ? (
               <Stack.Screen
                 name={screens.CREATE_PROFILE}
                 component={CreateEditorProfile}

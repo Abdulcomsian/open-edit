@@ -1,58 +1,80 @@
+import React from 'react';
 import {FlatList, View} from 'react-native';
-import TextComponent from '../../components/TextComponent/TextComponent';
-import {useNavigation} from '@react-navigation/native';
-import {useEffect, useRef, useState} from 'react';
-import {SCREEN_WIDTH} from '../../utils/metrics';
-import { colors } from "../../utils/theme";
+import {useRef} from 'react';
+import useCreateEditorProfile from './useCreateEditorProfile';
+import styles from './styles';
+import {signupPages} from './constants';
+import {getScale} from '../../utils/metrics';
+import {colors} from '../../utils/theme';
 
-const signupPages = [
-  {
-    id: '1',
-  },
-  {
-    id: '2',
-  },
-  {
-    id: '3',
-  },
-  {
-    id: '4',
-  },
-  {
-    id: '5',
-  },
-];
 const CreateEditorProfile = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const navigation = useNavigation();
-  useEffect(() => {
-    navigation.setParams({signupSteps: signupPages, activeStep: activeIndex});
-  }, [activeIndex]);
+  const {
+    renderCreteSkillSetInputs,
+    renderCreatePortfolio,
+    renderEducationInfoSection,
+    renderHourlyRateInputsSection,
+    handleScroll,
+    renderButtonJSX,
+    flatListRef,
+  } = useCreateEditorProfile();
 
-  const handleScroll = event => {
-    const {contentOffset} = event.nativeEvent;
-    const index = Math.round(contentOffset.x / SCREEN_WIDTH);
-    setActiveIndex(index);
+  const renderPages = key => {
+    switch (key) {
+      case 'skillsSet':
+        return <>{renderCreteSkillSetInputs()}</>;
+      case 'portfolio':
+        return (
+          <>
+            {renderCreatePortfolio()}
+            <View
+              style={{
+                position: 'absolute',
+                bottom: getScale(0),
+                width: '100%',
+              }}>
+              {renderButtonJSX()}
+            </View>
+          </>
+        );
+      case 'education':
+        return (
+          <>
+            {renderEducationInfoSection()}
+            <View
+              style={{
+                position: 'absolute',
+                bottom: getScale(0),
+                width: '100%',
+                backgroundColor: colors.white,
+              }}>
+              {renderButtonJSX()}
+            </View>
+          </>
+        );
+      case 'hourlyRate':
+        return (
+          <>
+            {renderHourlyRateInputsSection()}
+            <View
+              style={{
+                position: 'absolute',
+                bottom: getScale(0),
+                width: '100%',
+                backgroundColor: colors.white,
+              }}>
+              {renderButtonJSX()}
+            </View>
+          </>
+        );
+      case 'profile':
+        return <View />;
+    }
   };
-
-  const flatListRef = useRef(null);
-
   const renderItem = ({item}) => {
-    return (
-      <View
-        style={{
-          width: SCREEN_WIDTH,
-          alignItem: 'center',
-          justifyContent: 'center',
-          flex: 1,
-          backgroundColor: colors.white,
-        }}>
-        <TextComponent>{item.id}</TextComponent>
-      </View>
-    );
+    return <View style={styles.pageContainer}>{renderPages(item.key)}</View>;
   };
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={styles.parent}>
       <FlatList
         ref={flatListRef}
         bounces={false}
@@ -60,14 +82,10 @@ const CreateEditorProfile = () => {
         renderItem={renderItem}
         horizontal
         pagingEnabled
-        onScroll={handleScroll}
+        // onScroll={handleScroll}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
-        onMomentumScrollEnd={event => {
-          const {contentOffset} = event.nativeEvent;
-          const currentIndex = Math.round(contentOffset.x / SCREEN_WIDTH);
-          setActiveIndex(currentIndex);
-        }}
+        onMomentumScrollEnd={handleScroll}
         accessibilityRole="list"
       />
     </View>

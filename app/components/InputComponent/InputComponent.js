@@ -12,13 +12,21 @@ const InputComponent = forwardRef(
       containerStyle,
       value,
       inputStyle,
+      textInputStyle,
       label,
       placeholder,
       onChangeText,
       LeftIcon,
+      RightIcon,
       SkillComponent,
       editable = true,
       onInputPress,
+      multiline = false,
+      isDropDown,
+      isVisibleDropDown,
+      isCustomView,
+      children,
+      bottomMessage,
       ...rest
     },
     ref,
@@ -34,31 +42,55 @@ const InputComponent = forwardRef(
     }));
 
     const InputWrapper = !editable ? Touchable : View;
+    const Input = isCustomView ? View : TextInput;
+
     return (
-      <View style={[styles.defaultInputContainer, containerStyle]}>
+      <View
+        style={[
+          styles.defaultInputContainer,
+          containerStyle,
+          multiline && styles.multilineInputContainer,
+          isCustomView && styles.customViewInputContainer,
+        ]}>
         {label ? (
           <TextComponent font={'medium'} text={label} style={styles.label} />
         ) : null}
         <InputWrapper
           onPress={onInputPress}
-          style={[styles.defaultInput, inputStyle]}>
+          style={[
+            styles.defaultInput,
+            inputStyle,
+            multiline && styles.multilineStyle,
+            isCustomView && styles.customViewInputStyle,
+          ]}>
           {LeftIcon ? <LeftIcon /> : null}
-          <TextInput
+          <Input
             ref={inputRef}
-            style={{
-              fontFamily: FONTS.REGULAR,
-              fontSize: getFontSize(14),
-              width: '90%',
-              color: colors.textPrimary,
-            }}
+            style={[
+              styles.textInputStyle,
+              textInputStyle,
+              !LeftIcon && !RightIcon && {width: '100%'},
+              multiline && {
+                lineHeight: 25,
+                width: '100%',
+              },
+            ]}
             value={value}
             onChangeText={onChangeText}
             placeholder={placeholder}
             placeholderTextColor={colors.textSecondary}
             editable={editable}
-            {...rest}
-          />
+            multiline={multiline}
+            {...rest}>
+            {isCustomView ? children : null}
+          </Input>
+          {RightIcon ? <RightIcon /> : null}
         </InputWrapper>
+        {bottomMessage ? (
+          <TextComponent style={styles.bottomMessage}>
+            {bottomMessage}
+          </TextComponent>
+        ) : null}
       </View>
     );
   },
@@ -66,9 +98,16 @@ const InputComponent = forwardRef(
 
 const styles = StyleSheet.create({
   defaultInputContainer: {
-    height: getMScale(81),
+    height: getVerticalScale(81),
     marginVertical: getVerticalScale(10),
     width: '100%',
+  },
+  multilineInputContainer: {
+    height: getVerticalScale(125),
+  },
+  customViewInputContainer: {
+    minHeight: getVerticalScale(125),
+    height: 'auto',
   },
   defaultInput: {
     borderColor: colors.lightGrey1,
@@ -82,10 +121,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
-  iconView: {},
+  multilineStyle: {
+    height: getVerticalScale(96),
+    alignItems: 'flex-start',
+  },
+  customViewInputStyle: {minHeight: getVerticalScale(96), height: 'auto'},
   label: {
     fontSize: getFontSize(16),
     lineHeight: 21,
+  },
+  textInputStyle: {
+    fontFamily: FONTS.REGULAR,
+    fontSize: getFontSize(14),
+    width: '90%',
+    color: colors.textPrimary,
+  },
+  bottomMessage: {
+    color: colors.textSecondary,
+    fontSize: getFontSize(12),
+    marginVertical: getVerticalScale(5),
   },
 });
 export default InputComponent;

@@ -1,6 +1,7 @@
 import {FlatList, Text, View} from 'react-native';
 import JobRequestCard from '../../components/JobRequestCard/JobRequestCard';
 import {colors} from '../../utils/theme';
+import {getVerticalScale} from '../../utils/metrics';
 
 const favouriteJobs = [
   {
@@ -34,7 +35,12 @@ const FavouritesScreen = () => {
   };
   return (
     <View
-      style={{flex: 1, paddingHorizontal: 15, backgroundColor: colors.white}}>
+      style={{
+        flex: 1,
+        paddingHorizontal: 15,
+        backgroundColor: colors.white,
+        paddingTop: getVerticalScale(20),
+      }}>
       <FlatList
         data={favouriteJobs}
         renderItem={renderFavourites}

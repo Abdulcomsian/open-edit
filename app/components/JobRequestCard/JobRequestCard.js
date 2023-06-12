@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Platform } from "react-native";
+import {View, StyleSheet, Platform} from 'react-native';
 
 import {getFontSize, getMScale, getVerticalScale} from '../../utils/metrics';
 import {colors} from '../../utils/theme';
@@ -31,7 +31,7 @@ const JobRequestCard = ({item, isFavourite}) => {
             {skills.join(' | ')}
           </TextComponent>
         </View>
-        <View style={[styles.rightMostView, isFavourite && {width: '5%'} ]}>
+        <View style={[styles.rightMostView, isFavourite && {width: '5%'}]}>
           {isFavourite ? (
             <FavouriteIcon />
           ) : (
@@ -82,21 +82,24 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 2,
-      }
-    })
+      },
+    }),
   },
   topView: {
     flexDirection: 'row',
-    width: '90%',
+    width: '100%',
     alignSelf: 'center',
     justifyContent: 'space-between',
   },
-  editorImageView: {width: '10%', alignItems: 'flex-start'},
+  editorImageView: {width: '13%', alignItems: 'flex-start'},
   editorImage: {width: 40, height: 40, borderRadius: 20},
-  nameAndSkillsView: {width: '70%', alignItems: 'flex-start'},
+  nameAndSkillsView: {width: '75%', alignItems: 'flex-start', marginStart: 10},
   nameText: {fontSize: getFontSize(14)},
-  skillsText: {fontSize: getFontSize(14), width: '70%'},
-  rightMostView: {width: '10%', alignItems: 'flex-start'},
+  skillsText: {fontSize: getFontSize(14), width: '75%'},
+  rightMostView: {
+    width: '12%',
+    alignItems: 'flex-start',
+  },
   descriptionText: {
     marginTop: getVerticalScale(15),
     color: colors.textSecondary,

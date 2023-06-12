@@ -1,6 +1,6 @@
 import {logToConsole} from '../../configs/ReactotronConfig';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   getFontSize,
   getMScale,
@@ -19,37 +19,19 @@ const CreateProfileHeader = ({route}) => {
   const {name} = route || {};
   const {top} = useSafeAreaInsets();
   return (
-    <View
-      style={{
-        paddingTop: getSafeAreaPadding(top),
-        width: SCREEN_WIDTH,
-        paddingHorizontal: getMScale(20),
-        alignItems: 'center',
-        paddingBottom: 10,
-      }}>
-      <TextComponent font={'semiBold'} style={{fontSize: getFontSize(20)}}>
+    <View style={[styles.parent, {paddingTop: getSafeAreaPadding(top)}]}>
+      <TextComponent font={'semiBold'} style={styles.title}>
         {name}
       </TextComponent>
-      <View
-        style={{
-          position: 'absolute',
-          start: 20,
-          top: getSafeAreaPadding(top),
-        }}>
+      <View style={[styles.profileIconView, {top: getSafeAreaPadding(top)}]}>
         <ProfileIcon />
       </View>
-      <View
-        style={{
-          marginTop: getVerticalScale(20),
-          width: '95%',
-          alignSelf: 'center',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-        }}>
+      <View style={styles.stepsView}>
         {signupSteps?.map((item, index) => (
           <View
+            key={item.id}
             style={{
-              width: SCREEN_WIDTH / signupSteps.length - 20,
+              width: SCREEN_WIDTH / signupSteps.length - 15,
               height: 6,
               borderRadius: 30,
               backgroundColor:
@@ -61,4 +43,25 @@ const CreateProfileHeader = ({route}) => {
     </View>
   );
 };
+const styles = StyleSheet.create({
+  parent: {
+    width: SCREEN_WIDTH,
+    paddingHorizontal: getMScale(15),
+    alignItems: 'center',
+    paddingBottom: 10,
+    backgroundColor: colors.white,
+  },
+  title: {fontSize: getFontSize(20)},
+  profileIconView: {
+    position: 'absolute',
+    start: 20,
+  },
+  stepsView: {
+    marginTop: getVerticalScale(20),
+    width: '100%',
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+});
 export default CreateProfileHeader;
