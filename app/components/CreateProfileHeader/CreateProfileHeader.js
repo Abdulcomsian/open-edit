@@ -1,4 +1,3 @@
-import {logToConsole} from '../../configs/ReactotronConfig';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {StyleSheet, View} from 'react-native';
 import {
@@ -9,37 +8,42 @@ import {
   SCREEN_WIDTH,
 } from '../../utils/metrics';
 import TextComponent from '../TextComponent/TextComponent';
-import Touchable from '../Touchable/Touchable';
 import ProfileIcon from '../../assets/svgs/ProfileIcon';
 import {colors} from '../../utils/theme';
+import {logToConsole} from '../../configs/ReactotronConfig';
 
 const CreateProfileHeader = ({route}) => {
   const {signupSteps, activeStep} = route.params || {};
-
+  logToConsole({activeStep});
   const {name} = route || {};
   const {top} = useSafeAreaInsets();
+  const isPreviewHeader = activeStep === 5;
   return (
     <View style={[styles.parent, {paddingTop: getSafeAreaPadding(top)}]}>
       <TextComponent font={'semiBold'} style={styles.title}>
-        {name}
+        {isPreviewHeader ? 'Preview Profile' : name}
       </TextComponent>
-      <View style={[styles.profileIconView, {top: getSafeAreaPadding(top)}]}>
-        <ProfileIcon />
-      </View>
-      <View style={styles.stepsView}>
-        {signupSteps?.map((item, index) => (
-          <View
-            key={item.id}
-            style={{
-              width: SCREEN_WIDTH / signupSteps.length - 15,
-              height: 6,
-              borderRadius: 30,
-              backgroundColor:
-                index <= activeStep ? colors.primary : '#C4C4C480',
-            }}
-          />
-        ))}
-      </View>
+      {!isPreviewHeader ? (
+        <View style={[styles.profileIconView, {top: getSafeAreaPadding(top)}]}>
+          <ProfileIcon />
+        </View>
+      ) : null}
+      {!isPreviewHeader ? (
+        <View style={styles.stepsView}>
+          {signupSteps?.map((item, index) => (
+            <View
+              key={item.id}
+              style={{
+                width: SCREEN_WIDTH / signupSteps.length - 15,
+                height: 6,
+                borderRadius: 30,
+                backgroundColor:
+                  index <= activeStep ? colors.primary : '#C4C4C480',
+              }}
+            />
+          ))}
+        </View>
+      ) : null}
     </View>
   );
 };

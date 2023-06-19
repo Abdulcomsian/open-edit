@@ -157,6 +157,36 @@ const styles = StyleSheet.create({
     marginTop: getVerticalScale(15),
     backgroundColor: '#F3F3F3',
   },
+
+  //-------------------------------HOURLY_RATE_SECTION---------------------------
+
+
+  //-------------------------------PROFILE_INFO_SECTION--------------------------
+  profileScrollContentContainer: {alignItems: 'center'},
+  profileInfoContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: getMScale(84),
+    height: getMScale(84),
+    borderRadius: getMScale(42),
+    marginTop: getMScale(50),
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: getMScale(42),
+  },
+  uploadPhotoButton: {marginTop: getMScale(25), width: '90%'},
+  profileInputsContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: getVerticalScale(25),
+  },
+  profileButtonContainer: {
+    marginVertical: getMScale(20),
+    width: '90%',
+    alignSelf: 'center',
+  },
 });
 
 export default styles;

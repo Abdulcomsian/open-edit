@@ -1,7 +1,7 @@
 import React from 'react';
 import KeyboardAwareScroll from '../../components/KeyboardAwareScrollComponent/KeyboardAwareScroll';
 import InputComponent from '../../components/InputComponent/InputComponent';
-import {View, Animated, ScrollView} from 'react-native';
+import {View, Animated, ScrollView, StyleSheet, Platform} from 'react-native';
 import Touchable from '../../components/Touchable/Touchable';
 import TextComponent from '../../components/TextComponent/TextComponent';
 import ChevronDown from '../../assets/svgs/ChevronDown';
@@ -16,7 +16,9 @@ import {
   EDUCATION_INPUTS,
   HOURLY_RATE_INPUTS,
   INPUT_KEYS,
+  LANGUAGES,
   PORTFOLIO_INPUTS,
+  PROFILE_INFO_INPUTS,
   SERVICES_OFFERINGS,
   signupPages,
   skillsSetInputs,
@@ -36,13 +38,18 @@ import Video from 'react-native-video';
 import CloseCircle from '../../assets/svgs/CloseCircle';
 import dayjs from 'dayjs';
 import DatePicker from 'react-native-date-picker';
-import {isIos} from '../../utils/sharedUtils';
+import ProfileIconLarge from '../../assets/svgs/ProfileIconLarge';
+import {FONTS} from '../../utils/fonts';
+import SearchIcon from '../../assets/svgs/SearchIcon';
+import ImageComponent from '../../components/ImageComponent/ImageComponent';
+import ReviewProfileThumbsUp from '../../assets/svgs/ReviewProfileThumbsUp';
+import LocationPin from '../../assets/svgs/LocationPin';
+import EditIcon from '../../assets/svgs/EditIcon';
 
 const useCreateEditorProfile = () => {
   const [activePage, setActivePage] = useState(0);
   const [isVisibleServiceOfferings, setIsVisibleServiceOfferings] =
     useState(false);
-  const [isVisibleRateUnitsDD, setIsVisibleRateUnitsDD] = useState(false);
 
   const [inputState, setInputState] = useState({});
   const [isVisibleDateModal, setIsVisibleDateModal] = useState(false);
@@ -53,11 +60,29 @@ const useCreateEditorProfile = () => {
   const flatListRef = useRef(null);
 
   const dropDownHeight = useRef(new Animated.Value(0)).current;
+  const {
+    [INPUT_KEYS.TITLE]: title = '',
+    [INPUT_KEYS.BIO]: bio = '',
+    [INPUT_KEYS.SERVICE_OFFERINGS]: serviceOfferings,
+    [INPUT_KEYS.SKILLS]: skills = [],
+    [INPUT_KEYS.PORTFOLIO_LINK]: portfolioLink,
+    [INPUT_KEYS.PORTFOLIO_VIDEO]: portfolioVideo,
+    [INPUT_KEYS.HOURLY_RATE]: hourlyRate,
+    [INPUT_KEYS.ACTUAL_HOURLY_RATE]: actualHourlyRate,
+    [INPUT_KEYS.PROFILE_IMAGE]: profileImage,
+    [INPUT_KEYS.COUNTRY]: country,
+    [INPUT_KEYS.ADDRESS]: address,
+    [INPUT_KEYS.CITY]: city,
+    [INPUT_KEYS.LANGUAGE]: language,
+  } = inputState || {};
 
   const navigation = useNavigation();
   useEffect(() => {
-    navigation.setParams({signupSteps: signupPages, activeStep: activePage});
-  }, [activePage, navigation]);
+    navigation.setParams({
+      signupSteps: signupPages.filter(item => item.id !== '6'),
+      activeStep: activePage,
+    });
+  }, [activePage, navigation, signupPages]);
 
   const handleScroll = event => {
     const {contentOffset} = event.nativeEvent;
@@ -127,16 +152,13 @@ const useCreateEditorProfile = () => {
   );
 
   const validateSkillSetInputs = useCallback(() => {
-    const {
-      [INPUT_KEYS.TITLE]: title = '',
-      [INPUT_KEYS.BIO]: bio = '',
-      [INPUT_KEYS.SKILLS]: skills = [],
-      [INPUT_KEYS.SERVICE_OFFERINGS]: serviceOffering = {},
-    } = inputState || {};
     return (
-      title?.trim() && bio?.trim() && skills.length > 0 && serviceOffering?.name
+      title?.trim() &&
+      bio?.trim() &&
+      skills?.length > 0 &&
+      serviceOfferings?.name
     );
-  }, [inputState]);
+  }, [bio, serviceOfferings, skills, title]);
 
   const renderCreteSkillSetInputs = () => {
     return (
@@ -287,12 +309,8 @@ const useCreateEditorProfile = () => {
   //--------------------------------------PORTFOLIO----------------------------------
 
   const validatePortfolioSection = useCallback(() => {
-    const {
-      [INPUT_KEYS.PORTFOLIO_LINK]: portfolioLink = '',
-      [INPUT_KEYS.PORTFOLIO_VIDEO]: portfolioVideo = {},
-    } = inputState || {};
     return portfolioLink?.trim() || portfolioVideo?.path;
-  }, [inputState]);
+  }, [portfolioLink, portfolioVideo]);
 
   const openVideoPicker = () => {
     ImageCropPicker.openPicker({
@@ -511,13 +529,16 @@ const useCreateEditorProfile = () => {
 
   //----------------------------HOURLY_RATE_SETUP--------------------------------
 
+  const [isVisibleRateUnitsDD, setIsVisibleRateUnitsDD] = useState(false);
   const [unitDDVOffset, setUnitDDVOffset] = useState();
-
-  logToConsole({ddTop: unitDDVOffset, inputState});
 
   useEffect(() => {
     setInputState(prevState => ({...prevState, rateUnit: UNITS[0]}));
   }, []);
+
+  const validatedHourlyRateInputs = useCallback(() => {
+    return actualHourlyRate && hourlyRate;
+  }, [actualHourlyRate, hourlyRate]);
 
   const toggleUnitsDD = useCallback(() => {
     Animated.timing(dropDownHeight, {
@@ -546,11 +567,13 @@ const useCreateEditorProfile = () => {
             <Animated.View
               onLayout={event => {
                 const {height, y} = event.nativeEvent.layout || {};
-                logToConsole({height, y});
                 setUnitDDVOffset(height + y);
               }}>
               <InputComponent
                 value={inputState[key]}
+                onChangeText={(masked, unmasked) =>
+                  handleInputChange(key, unmasked)
+                }
                 containerStyle={{
                   width: '90%',
                   alignSelf: 'center',
@@ -565,7 +588,9 @@ const useCreateEditorProfile = () => {
                       }
                     }}
                     style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <TextComponent style={{marginEnd: 5}}>{inputState?.rateUnit?.label}</TextComponent>
+                    <TextComponent style={{marginEnd: 5}}>
+                      {inputState?.rateUnit?.label}
+                    </TextComponent>
                     <ChevronDown />
                   </Touchable>
                 )}
@@ -611,6 +636,414 @@ const useCreateEditorProfile = () => {
     );
   };
 
+  //-------------------------------PROFILE SETUP-----------------------------------
+
+  const [countries, setCountries] = useState([]);
+  const [isVisibleCountriesDD, setIsVisibleCountriesDD] = useState(false);
+  const [isVisibleLanguagesDD, setIsVisibleLanguagesDD] = useState(false);
+
+  const countriesDropDownHeight = useRef(new Animated.Value(0)).current;
+  const languagesDropDownHeight = useRef(new Animated.Value(0)).current;
+
+  const countriesDropDownPlacement = useRef(null);
+  const languagesDropDownPlacement = useRef(null);
+
+  const fetchCountriesList = () => {
+    fetch('https://restcountries.com/v3.1/all', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.json())
+      .then(json => {
+        const mappedResponse = json.map((c, i) => ({
+          id: String(i + 1),
+          name: c.name.common,
+          flag: c.flags?.png,
+        }));
+        setCountries(mappedResponse);
+      })
+      .catch(e => {
+        logToConsole({fetchCountriesList: e.message});
+      });
+  };
+
+  useEffect(() => {
+    fetchCountriesList();
+  }, []);
+
+  useEffect(() => {
+    //Default Selections
+    if (countries.length) {
+      const defaultCountry = countries.filter(
+        item => item?.name?.toLowerCase() === 'united states',
+      )[0];
+      setInputState(prevState => ({
+        ...prevState,
+        [INPUT_KEYS.COUNTRY]: defaultCountry,
+      }));
+    }
+    const defaultLanguage = LANGUAGES.filter(
+      lang => lang.name === 'English',
+    )[0];
+    setInputState(prevState => ({
+      ...prevState,
+      [INPUT_KEYS.LANGUAGE]: defaultLanguage,
+    }));
+  }, [countries]);
+  const checkIfSelectedCountry = useCallback(
+    item => {
+      const {[INPUT_KEYS.COUNTRY]: country} = inputState || {};
+      return {
+        isSelected: country?.id === item.id,
+      };
+    },
+    [inputState],
+  );
+
+  const checkIfSelectedLanguage = useCallback(
+    item => {
+      const {[INPUT_KEYS.LANGUAGE]: language} = inputState || {};
+      return {
+        isSelected: language.id === item.id,
+      };
+    },
+    [inputState],
+  );
+
+  const validateProfileInputs = useCallback(() => {
+    return profileImage && country?.name && address && city && language?.name;
+  }, [address, city, country, language, profileImage]);
+
+  const chooseProfilePhoto = () => {
+    ImageCropPicker.openPicker({
+      type: 'photo',
+      cropping: true,
+      cropperCircleOverlay: true,
+    })
+      .then(response => {
+        handleInputChange(INPUT_KEYS.PROFILE_IMAGE, response?.path);
+      })
+      .catch(e => {
+        logToConsole({chooseProfilePhoto: e.message});
+      });
+  };
+  const toggleCountriesDD = useCallback(() => {
+    Animated.timing(countriesDropDownHeight, {
+      toValue: isVisibleCountriesDD ? 0 : 250, // Adjust the height as needed
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+    setIsVisibleCountriesDD(prevState => !prevState);
+  }, [countriesDropDownHeight, isVisibleCountriesDD]);
+
+  const toggleLanguagesDD = useCallback(() => {
+    Animated.timing(languagesDropDownHeight, {
+      toValue: isVisibleLanguagesDD ? 0 : 250, // Adjust the height as needed
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+    setIsVisibleLanguagesDD(prevState => !prevState);
+  }, [isVisibleLanguagesDD, languagesDropDownHeight]);
+
+  const handleLayout = (key, e) => {
+    if (key === INPUT_KEYS.COUNTRY) {
+      countriesDropDownPlacement.current =
+        e.nativeEvent.layout?.y + e.nativeEvent.layout?.height;
+    }
+    if (key === INPUT_KEYS.LANGUAGE) {
+      languagesDropDownPlacement.current =
+        e.nativeEvent.layout?.y + e.nativeEvent.layout?.height;
+    }
+  };
+
+  const handleInputPress = key => {
+    if (key === INPUT_KEYS.COUNTRY) {
+      toggleCountriesDD();
+    } else if (key === INPUT_KEYS.LANGUAGE) {
+      toggleLanguagesDD();
+    }
+  };
+  const renderCountriesDropDown = () => {
+    return (
+      <>
+        {isVisibleCountriesDD ? (
+          <View
+            onTouchStart={toggleCountriesDD}
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              zIndex: 999,
+              backgroundColor: 'rgba(0,0,0,0)',
+            }}
+          />
+        ) : null}
+        <Animated.View
+          style={[
+            styles.dropDownParent,
+            {
+              height: countriesDropDownHeight,
+              top: countriesDropDownPlacement.current,
+            },
+          ]}>
+          {isVisibleCountriesDD ? (
+            <ScrollView>
+              {countries.map(item => {
+                const {isSelected = false} = checkIfSelectedCountry(item);
+                return (
+                  <Touchable
+                    onPress={() => {
+                      handleInputChange(INPUT_KEYS.COUNTRY, item);
+                      toggleCountriesDD();
+                    }}
+                    key={item.id}
+                    style={[
+                      styles.checkBoxItem,
+                      isSelected && styles.selectedCheckBoxItemStyle,
+                    ]}>
+                    <EmptyCheckbox isChecked={isSelected} />
+                    <TextComponent style={styles.serviceOfferingsText}>
+                      {item.name}
+                    </TextComponent>
+                  </Touchable>
+                );
+              })}
+            </ScrollView>
+          ) : null}
+        </Animated.View>
+      </>
+    );
+  };
+  const renderLanguagesDropDown = () => {
+    return (
+      <>
+        {isVisibleLanguagesDD ? (
+          <View
+            onTouchStart={toggleLanguagesDD}
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              zIndex: 999,
+              backgroundColor: 'rgba(0,0,0,0)',
+            }}
+          />
+        ) : null}
+        <Animated.View
+          style={[
+            styles.dropDownParent,
+            {
+              height: languagesDropDownHeight,
+              top: languagesDropDownPlacement.current,
+            },
+          ]}>
+          {isVisibleLanguagesDD ? (
+            <ScrollView>
+              {LANGUAGES.map(item => {
+                const {isSelected} = checkIfSelectedLanguage(item);
+                return (
+                  <Touchable
+                    onPress={() => {
+                      handleInputChange(INPUT_KEYS.LANGUAGE, item);
+                      toggleLanguagesDD();
+                    }}
+                    key={item.id}
+                    style={[
+                      styles.checkBoxItem,
+                      isSelected && styles.selectedCheckBoxItemStyle,
+                    ]}>
+                    <EmptyCheckbox isChecked={isSelected} />
+                    <TextComponent style={styles.serviceOfferingsText}>
+                      {item.name}
+                    </TextComponent>
+                  </Touchable>
+                );
+              })}
+            </ScrollView>
+          ) : null}
+        </Animated.View>
+      </>
+    );
+  };
+  const renderProfileSetupSection = () => {
+    return (
+      <>
+        <KeyboardAwareScroll
+          contentContainerStyle={styles.profileScrollContentContainer}>
+          <View style={styles.profileInfoContainer}>
+            {!inputState[INPUT_KEYS.PROFILE_IMAGE] ? (
+              <ProfileIconLarge />
+            ) : (
+              <ImageComponent
+                source={{uri: inputState[INPUT_KEYS.PROFILE_IMAGE]}}
+                style={styles.profileImage}
+                resizeMode={'cover'}
+              />
+            )}
+          </View>
+          <Button
+            backgroundColor={colors.primary_12}
+            titleColor={colors.primary}
+            style={styles.uploadPhotoButton}
+            title={'+ Upload Photo'}
+            titleStyle={{fontFamily: FONTS.MEDIUM}}
+            onPress={chooseProfilePhoto}
+          />
+          <View style={styles.profileInputsContainer}>
+            {PROFILE_INFO_INPUTS.map(input => {
+              const {key, id} = input || {};
+              return (
+                <Animated.View
+                  key={String(id)}
+                  style={
+                    key === INPUT_KEYS.CITY && {marginTop: getVerticalScale(15)}
+                  }
+                  onLayout={event => handleLayout(key, event)}>
+                  <InputComponent
+                    value={inputState[key]?.name || inputState[key]}
+                    onChangeText={text => handleInputChange(key, text)}
+                    RightIcon={() =>
+                      key === INPUT_KEYS.COUNTRY ||
+                      key === INPUT_KEYS.LANGUAGE ? (
+                        <ChevronDown />
+                      ) : null
+                    }
+                    onInputPress={() => handleInputPress(key)}
+                    LeftIcon={() =>
+                      key === INPUT_KEYS.CITY ? (
+                        <SearchIcon />
+                      ) : key === INPUT_KEYS.COUNTRY && inputState[key] ? (
+                        <ImageComponent
+                          source={{uri: inputState[key].flag}}
+                          resizeMode={'contain'}
+                          style={{
+                            width: getMScale(16),
+                            height: getMScale(15),
+                            marginEnd: 10,
+                          }}
+                        />
+                      ) : null
+                    }
+                    {...input}
+                  />
+                </Animated.View>
+              );
+            })}
+          </View>
+          <View style={styles.profileButtonContainer}>{renderButtonJSX()}</View>
+        </KeyboardAwareScroll>
+        {renderCountriesDropDown()}
+        {renderLanguagesDropDown()}
+      </>
+    );
+  };
+
+  //-----------------------------REVIEW PROFILE SECTION----------------------------
+
+  const renderEditIcon = (onPress) => {
+    return (
+      <Touchable
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          width: 24,
+          height: 24,
+          borderRadius: 12,
+          backgroundColor: colors.white,
+          alignItems: 'center',
+          justifyContent: 'center',
+          ...Platform.select({
+            ios: {
+              shadowRadius: 5,
+              shadowOpacity: 0.2,
+              shadowColor: colors.black,
+              shadowOffset: {
+                width: 1,
+                height: 0,
+              },
+            },
+            android: {
+              elevation: 2,
+            },
+          }),
+        }}>
+        <EditIcon />
+      </Touchable>
+    )
+  }
+  const renderReviewProfileSection = () => {
+    return (
+      <KeyboardAwareScroll
+        contentContainerStyle={{flex: 1, alignItems: 'center'}}>
+        <View style={{marginTop: getVerticalScale(20)}}>
+          <View style={{alignSelf: 'center'}}>
+            <ReviewProfileThumbsUp />
+          </View>
+          <View
+            style={{
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: getVerticalScale(35),
+            }}>
+            <TextComponent
+              font={'bold'}
+              style={{
+                fontSize: getFontSize(16),
+              }}>
+              {'Looking Good, John'}
+            </TextComponent>
+            <TextComponent style={{lineHeight: 25}}>
+              Make any edits you want, then submit your profile. You can make
+              more changes after it’s live
+            </TextComponent>
+          </View>
+        </View>
+        <View
+          style={{
+            marginVertical: getVerticalScale(25),
+            height: 10,
+            backgroundColor: '#f1f1f1',
+            width: SCREEN_WIDTH,
+          }}
+        />
+        <View style={{width: SCREEN_WIDTH, paddingHorizontal: getMScale(15)}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{width: 66, height: 66, borderRadius: 33}}>
+              <ImageComponent
+                source={{uri: profileImage}}
+                style={{width: 66, height: 66, borderRadius: 33}}
+              />
+              {renderEditIcon()}
+            </View>
+            <View style={{marginStart: getMScale(17)}}>
+              <TextComponent
+                font={'semiBold'}
+                style={{fontSize: getFontSize(16)}}>
+                John Doe
+              </TextComponent>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: getVerticalScale(5),
+                }}>
+                <LocationPin />
+                <TextComponent
+                  style={{
+                    color: colors.textSecondary,
+                    fontSize: getFontSize(12),
+                    marginStart: getMScale(7),
+                  }}>
+                  {address}, {city}
+                </TextComponent>
+              </View>
+            </View>
+          </View>
+          <View style={{height: 1, backgroundColor: '#f3f3f3', width: '100%', marginTop: getVerticalScale(20)}}/>
+        </View>
+      </KeyboardAwareScroll>
+    );
+  };
   //-------------------------------GLOBAL BUTTON COMPONENT--------------------------
 
   const isButtonEnabled = useMemo(() => {
@@ -621,12 +1054,18 @@ const useCreateEditorProfile = () => {
         return validatePortfolioSection();
       case 2:
         return validateEducationSection();
+      case 3:
+        return validatedHourlyRateInputs();
+      case 4:
+        return validateProfileInputs();
     }
   }, [
     activePage,
     validatePortfolioSection,
     validateSkillSetInputs,
     validateEducationSection,
+    validatedHourlyRateInputs,
+    validateProfileInputs,
   ]);
 
   const handleOnPress = useCallback(() => {
@@ -658,6 +1097,8 @@ const useCreateEditorProfile = () => {
     renderCreatePortfolio,
     renderEducationInfoSection,
     renderHourlyRateInputsSection,
+    renderProfileSetupSection,
+    renderReviewProfileSection,
   };
 };
 

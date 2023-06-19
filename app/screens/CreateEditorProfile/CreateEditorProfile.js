@@ -16,6 +16,8 @@ const CreateEditorProfile = () => {
     handleScroll,
     renderButtonJSX,
     flatListRef,
+    renderProfileSetupSection,
+    renderReviewProfileSection,
   } = useCreateEditorProfile();
 
   const renderPages = key => {
@@ -67,7 +69,9 @@ const CreateEditorProfile = () => {
           </>
         );
       case 'profile':
-        return <View />;
+        return <>{renderProfileSetupSection()}</>;
+      case 'reviewProfile':
+        return <>{renderReviewProfileSection()}</>;
     }
   };
   const renderItem = ({item}) => {
@@ -80,6 +84,7 @@ const CreateEditorProfile = () => {
         bounces={false}
         data={signupPages}
         renderItem={renderItem}
+        scrollEnabled={false}
         horizontal
         pagingEnabled
         // onScroll={handleScroll}

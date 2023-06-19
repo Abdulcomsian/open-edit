@@ -1,3 +1,5 @@
+import {createNumberMask} from 'react-native-mask-input';
+
 export const INPUT_KEYS = {
   TITLE: 'title',
   BIO: 'bio',
@@ -12,6 +14,11 @@ export const INPUT_KEYS = {
   DEGREE_END_DATE: 'degreeEndDate',
   HOURLY_RATE: 'hourlyRate',
   ACTUAL_HOURLY_RATE: 'actualHourlyRate',
+  PROFILE_IMAGE: 'profileImage',
+  COUNTRY: 'country',
+  ADDRESS: 'address',
+  CITY: 'city',
+  LANGUAGE: 'language',
 };
 
 export const SERVICES_OFFERINGS = [
@@ -127,6 +134,10 @@ export const signupPages = [
     id: '5',
     key: 'profile',
   },
+  {
+    id: '6',
+    key: 'reviewProfile',
+  },
 ];
 
 export const PORTFOLIO_INPUTS = [
@@ -176,6 +187,13 @@ export const EDUCATION_INPUTS = [
   ],
 ];
 
+const dollarMask = createNumberMask({
+  prefix: ['$', ' '],
+  delimiter: ',',
+  separator: '.',
+  precision: 2,
+});
+
 export const HOURLY_RATE_INPUTS = [
   {
     id: '1',
@@ -185,6 +203,8 @@ export const HOURLY_RATE_INPUTS = [
     bottomMessage: 'Total amount the client will see',
     keyboardType: 'decimal-pad',
     returnKeyType: 'done',
+    mask: dollarMask,
+    isMaskInput: true,
   },
   {
     id: '2',
@@ -194,6 +214,8 @@ export const HOURLY_RATE_INPUTS = [
     bottomMessage: 'The estimated amount you’ll receive after service fees',
     keyboardType: 'decimal-pad',
     returnKeyType: 'done',
+    mask: dollarMask,
+    isMaskInput: true,
   },
 ];
 
@@ -213,5 +235,67 @@ export const UNITS = [
   {
     id: '4',
     label: '/month',
+  },
+];
+
+export const PROFILE_INFO_INPUTS = [
+  {
+    id: '1',
+    key: INPUT_KEYS.COUNTRY,
+    label: 'Country',
+    placeholder: 'Select Country',
+    editable: false,
+    pointerEvents: 'none',
+  },
+  {
+    id: '2',
+    key: INPUT_KEYS.ADDRESS,
+    label: 'Address',
+    placeholder: 'Enter Address',
+    bottomMessage: 'This won’t show on profile',
+  },
+  {
+    id: '3',
+    key: INPUT_KEYS.CITY,
+    label: 'City',
+    placeholder: 'Search City',
+  },
+  {
+    id: '4',
+    key: INPUT_KEYS.LANGUAGE,
+    label: 'language',
+    placeholder: 'Select language',
+    editable: false,
+    pointerEvents: 'none',
+  },
+];
+export const LANGUAGES = [
+  {
+    id: '1',
+    name: 'English',
+  },
+  {
+    id: '2',
+    name: 'Italian',
+  },
+  {
+    id: '3',
+    name: 'French',
+  },
+  {
+    id: '4',
+    name: 'Dutch',
+  },
+  {
+    id: '5',
+    name: 'Arabic',
+  },
+  {
+    id: '6',
+    name: 'Hindi',
+  },
+  {
+    id: '7',
+    name: 'Urdu',
   },
 ];

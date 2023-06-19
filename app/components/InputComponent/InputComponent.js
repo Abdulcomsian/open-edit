@@ -5,6 +5,7 @@ import {getFontSize, getMScale, getVerticalScale} from '../../utils/metrics';
 import {forwardRef, useImperativeHandle, useRef} from 'react';
 import {FONTS} from '../../utils/fonts';
 import Touchable from '../Touchable/Touchable';
+import MaskInput from 'react-native-mask-input';
 
 const InputComponent = forwardRef(
   (
@@ -25,6 +26,7 @@ const InputComponent = forwardRef(
       isDropDown,
       isVisibleDropDown,
       isCustomView,
+      isMaskInput,
       children,
       bottomMessage,
       ...rest
@@ -42,7 +44,7 @@ const InputComponent = forwardRef(
     }));
 
     const InputWrapper = !editable ? Touchable : View;
-    const Input = isCustomView ? View : TextInput;
+    const Input = isCustomView ? View : isMaskInput ? MaskInput : TextInput;
 
     return (
       <View
@@ -139,7 +141,8 @@ const styles = StyleSheet.create({
   bottomMessage: {
     color: colors.textSecondary,
     fontSize: getFontSize(12),
-    marginVertical: getVerticalScale(5),
+    marginTop: getVerticalScale(5),
+    marginBottom: getMScale(15),
   },
 });
 export default InputComponent;
