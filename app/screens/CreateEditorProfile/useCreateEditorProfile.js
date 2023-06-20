@@ -45,6 +45,9 @@ import ImageComponent from '../../components/ImageComponent/ImageComponent';
 import ReviewProfileThumbsUp from '../../assets/svgs/ReviewProfileThumbsUp';
 import LocationPin from '../../assets/svgs/LocationPin';
 import EditIcon from '../../assets/svgs/EditIcon';
+import {images} from '../../assets';
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/userSlice";
 
 const useCreateEditorProfile = () => {
   const [activePage, setActivePage] = useState(0);
@@ -69,6 +72,7 @@ const useCreateEditorProfile = () => {
     [INPUT_KEYS.PORTFOLIO_VIDEO]: portfolioVideo,
     [INPUT_KEYS.HOURLY_RATE]: hourlyRate,
     [INPUT_KEYS.ACTUAL_HOURLY_RATE]: actualHourlyRate,
+    educations = [],
     [INPUT_KEYS.PROFILE_IMAGE]: profileImage,
     [INPUT_KEYS.COUNTRY]: country,
     [INPUT_KEYS.ADDRESS]: address,
@@ -939,23 +943,36 @@ const useCreateEditorProfile = () => {
 
   //-----------------------------REVIEW PROFILE SECTION----------------------------
 
-  const renderEditIcon = (onPress) => {
+  const dispatch = useDispatch();
+  const renderHorizontalLine = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          backgroundColor: '#f3f3f3',
+          width: '100%',
+          marginTop: getVerticalScale(20),
+        }}
+      />
+    );
+  };
+  const renderEditIcon = onPress => {
     return (
       <Touchable
         style={{
           position: 'absolute',
           bottom: 0,
           right: 0,
-          width: 24,
-          height: 24,
-          borderRadius: 12,
+          width: 28,
+          height: 28,
+          borderRadius: 14,
           backgroundColor: colors.white,
           alignItems: 'center',
           justifyContent: 'center',
           ...Platform.select({
             ios: {
-              shadowRadius: 5,
-              shadowOpacity: 0.2,
+              shadowRadius: 3,
+              shadowOpacity: 0.1,
               shadowColor: colors.black,
               shadowOffset: {
                 width: 1,
@@ -969,12 +986,35 @@ const useCreateEditorProfile = () => {
         }}>
         <EditIcon />
       </Touchable>
-    )
-  }
+    );
+  };
+
+  const renderAddIcon = onPress => {
+    return (
+      <Touchable
+        style={{
+          width: 28,
+          height: 28,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <ImageComponent
+          source={images.add_outline}
+          style={{width: '100%', height: '100%'}}
+        />
+      </Touchable>
+    );
+  };
+
   const renderReviewProfileSection = () => {
     return (
       <KeyboardAwareScroll
-        contentContainerStyle={{flex: 1, alignItems: 'center'}}>
+        style={{flex: 1}}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: getMScale(50),
+          alignItems: 'center',
+        }}>
         <View style={{marginTop: getVerticalScale(20)}}>
           <View style={{alignSelf: 'center'}}>
             <ReviewProfileThumbsUp />
@@ -1039,8 +1079,201 @@ const useCreateEditorProfile = () => {
               </View>
             </View>
           </View>
-          <View style={{height: 1, backgroundColor: '#f3f3f3', width: '100%', marginTop: getVerticalScale(20)}}/>
+          {renderHorizontalLine()}
         </View>
+        <View
+          style={{
+            width: SCREEN_WIDTH,
+            paddingHorizontal: getMScale(15),
+            marginTop: getMScale(13),
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
+            <TextComponent
+              font={'semiBold'}
+              style={{fontSize: getFontSize(16)}}>
+              {title}
+            </TextComponent>
+            {renderEditIcon()}
+          </View>
+          <TextComponent style={{marginTop: getMScale(10)}}>
+            {bio}
+          </TextComponent>
+        </View>
+        {renderHorizontalLine()}
+        <View
+          style={{
+            width: SCREEN_WIDTH,
+            paddingHorizontal: getMScale(15),
+            marginTop: getMScale(13),
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
+            <TextComponent
+              font={'semiBold'}
+              style={{fontSize: getFontSize(16)}}>
+              Hourly Rate
+            </TextComponent>
+            {renderEditIcon()}
+          </View>
+          <TextComponent
+            style={{marginTop: getMScale(10), color: colors.textSecondary}}>
+            ${hourlyRate}
+          </TextComponent>
+        </View>
+        {renderHorizontalLine()}
+        <View
+          style={{
+            width: SCREEN_WIDTH,
+            paddingHorizontal: getMScale(15),
+            marginTop: getMScale(13),
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
+            <TextComponent
+              font={'semiBold'}
+              style={{fontSize: getFontSize(16)}}>
+              language
+            </TextComponent>
+            {renderEditIcon()}
+          </View>
+          <TextComponent
+            style={{marginTop: getMScale(10), color: colors.textSecondary}}>
+            {language?.name}
+          </TextComponent>
+        </View>
+        {renderHorizontalLine()}
+        <View
+          style={{
+            width: SCREEN_WIDTH,
+            paddingHorizontal: getMScale(15),
+            marginTop: getMScale(13),
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
+            <TextComponent
+              font={'semiBold'}
+              style={{fontSize: getFontSize(16)}}>
+              Skills
+            </TextComponent>
+            {renderEditIcon()}
+          </View>
+          <View
+            style={{
+              marginTop: getMScale(10),
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}>
+            {skills.map(skill => {
+              return (
+                <View key={skill.id} style={styles.skillItem}>
+                  <TextComponent font={'medium'} style={styles.skillTitle}>
+                    {skill?.title}
+                  </TextComponent>
+                  <Touchable
+                    onPress={() => handleSuggestedSkillsSelection(skill)}>
+                    <TextComponent font={'medium'} style={styles.crossText}>
+                      x
+                    </TextComponent>
+                  </Touchable>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+        {renderHorizontalLine()}
+        <View
+          style={{
+            width: SCREEN_WIDTH,
+            paddingHorizontal: getMScale(15),
+            marginTop: getMScale(13),
+            marginBottom: 30,
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+            }}>
+            <TextComponent
+              font={'semiBold'}
+              style={{fontSize: getFontSize(16)}}>
+              Education
+            </TextComponent>
+            {renderAddIcon()}
+          </View>
+          {educations.map(item => {
+            return (
+              <View style={{marginTop: getMScale(8)}}>
+                <TextComponent
+                  font={'medium'}
+                  style={{fontSize: getFontSize(14)}}>
+                  {item.degreeName}
+                </TextComponent>
+                <TextComponent style={{fontSize: getFontSize(12)}}>
+                  {item.instituteName}
+                </TextComponent>
+                {item.degreeStartDate && item.degreeEndDate ? (
+                  <TextComponent
+                    font={'medium'}
+                    style={{
+                      color: colors.textSecondary,
+                      fontSize: getFontSize(12),
+                    }}>
+                    {dayjs(item.degreeStartDate).format('YYYY')} -{' '}
+                    {dayjs(item.degreeEndDate).format('YYYY')}
+                  </TextComponent>
+                ) : null}
+                <Touchable
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 14,
+                    backgroundColor: colors.white,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    ...Platform.select({
+                      ios: {
+                        shadowRadius: 3,
+                        shadowOpacity: 0.1,
+                        shadowColor: colors.black,
+                        shadowOffset: {
+                          width: 1,
+                          height: 0,
+                        },
+                      },
+                      android: {
+                        elevation: 2,
+                      },
+                    }),
+                  }}>
+                  <EditIcon />
+                </Touchable>
+              </View>
+            );
+          })}
+        </View>
+        <Button
+          title={'Submit Profile'}
+          onPress={() => dispatch(setUser(inputState))}
+          style={{marginVertical: getVerticalScale(20), width: '90%'}}
+        />
       </KeyboardAwareScroll>
     );
   };
