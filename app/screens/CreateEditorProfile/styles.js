@@ -136,7 +136,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     fontSize: getFontSize(10),
   },
-
+  lightBackgroundButton: {
+    backgroundColor: colors.primary_12,
+    height: getVerticalScale(53),
+    width: '90%',
+    marginTop: getVerticalScale(19),
+  },
   //-------------------------------EDUCATION_SECTION----------------------------
   keyboardScrollContentContainer: {paddingBottom: getVerticalScale(150)},
   keyboardScrollStyle: {
@@ -160,7 +165,14 @@ const styles = StyleSheet.create({
 
   //-------------------------------HOURLY_RATE_SECTION---------------------------
 
-
+  hourlyRateInputContainerStyle: {
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: getVerticalScale(25),
+  },
+  hourlyRateInputStyle: {width: '50%'},
+  hourlyRateDropDownRightView: {flexDirection: 'row', alignItems: 'center'},
+  hourLabel: {marginEnd: 5},
   //-------------------------------PROFILE_INFO_SECTION--------------------------
   profileScrollContentContainer: {alignItems: 'center'},
   profileInfoContainer: {
@@ -182,11 +194,146 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: getVerticalScale(25),
   },
+  cityInputStyle: {marginTop: getVerticalScale(15)},
   profileButtonContainer: {
     marginVertical: getMScale(20),
     width: '90%',
     alignSelf: 'center',
   },
+  countryFlag: {
+    width: getMScale(16),
+    height: getMScale(15),
+    marginEnd: 10,
+  },
+
+  //--------------------------_REVIEW PROFILE SECTION------------------------
+
+  reviewProfileContainer: {flex: 1},
+  reviewProfileScrollContentContainer: {
+    flexGrow: 1,
+    paddingBottom: getMScale(50),
+    alignItems: 'center',
+  },
+  thumbsUpContainer: {marginTop: getVerticalScale(20)},
+  thumbsUpIcon: {alignSelf: 'center'},
+  descriptionView: {
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: getVerticalScale(35),
+  },
+  nameText: {
+    fontSize: getFontSize(16),
+  },
+  descriptionText: {lineHeight: 25},
+  dividerView: {
+    marginVertical: getVerticalScale(25),
+    height: 10,
+    backgroundColor: '#f1f1f1',
+    width: SCREEN_WIDTH,
+  },
+  infoSection: {width: SCREEN_WIDTH, paddingHorizontal: getMScale(15)},
+  infoSectionContainerRow: {flexDirection: 'row', alignItems: 'center'},
+  reviewProfileImage: {width: 66, height: 66, borderRadius: 33},
+  reviewProfileHorizontalLine: {
+    height: 1,
+    backgroundColor: '#f3f3f3',
+    width: '100%',
+    marginTop: getVerticalScale(20),
+  },
+  editIcon: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowRadius: 3,
+        shadowOpacity: 0.1,
+        shadowColor: colors.black,
+        shadowOffset: {
+          width: 1,
+          height: 0,
+        },
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  reviewProfileNameAndLocationView: {marginStart: getMScale(17)},
+  reviewProfileName: {fontSize: getFontSize(16)},
+  reviewProfileLocationInfoView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: getVerticalScale(5),
+  },
+  reviewProfileLocationText: {
+    color: colors.textSecondary,
+    fontSize: getFontSize(12),
+    marginStart: getMScale(7),
+  },
+  addIconCircle: {
+    width: 28,
+    height: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  infoSectionView: {
+    width: SCREEN_WIDTH,
+    paddingHorizontal: getMScale(15),
+    marginTop: getMScale(13),
+  },
+  infoSectionRowView: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  sectionTitle: {fontSize: getFontSize(16)},
+  sectionDescription: {marginTop: getMScale(10)},
+  sectionDescriptionLightText: {
+    marginTop: getMScale(10),
+    color: colors.textSecondary,
+  },
+  reviewProfileSkillsWrapper: {
+    marginTop: getMScale(10),
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  reviewProfileEducationItem: {marginTop: getMScale(8)},
+  reviewProfileDegreeNameText: {fontSize: getFontSize(14)},
+  reviewProfileInstituteNameText: {fontSize: getFontSize(12)},
+  reviewProfileDegreeDurationText: {
+    color: colors.textSecondary,
+    fontSize: getFontSize(12),
+  },
+  reviewProfileEDucationSectionEditIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowRadius: 3,
+        shadowOpacity: 0.1,
+        shadowColor: colors.black,
+        shadowOffset: {
+          width: 1,
+          height: 0,
+        },
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  submitButton: {marginVertical: getVerticalScale(20), width: '90%'},
 });
 
 export default styles;

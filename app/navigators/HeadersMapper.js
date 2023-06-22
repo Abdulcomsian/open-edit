@@ -12,7 +12,8 @@ const HeadersMapper = ({route}) => {
   const renderHeadersAccordingly = () => {
     switch (name) {
       case screens.HOME:
-        return <HomeScreenHeader />;
+      case screens.EDITOR_HOME:
+        return <HomeScreenHeader screenName={name} />;
       case screens.FOLDER_DETAIL:
         return <FolderDetailHeader />;
       case screens.POST_JOB:

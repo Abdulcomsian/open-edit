@@ -12,6 +12,7 @@ import FoldersStackNavigator from './FoldersStackNavigator';
 import useUserSelector from '../redux/selectorHooks/useUserSelector';
 import CreateEditorProfile from '../screens/CreateEditorProfile/CreateEditorProfile';
 import CreateProfileHeader from '../components/CreateProfileHeader/CreateProfileHeader';
+import EditorBottomTabNavigator from './EditorBottomTabNavigator';
 
 export const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
@@ -56,15 +57,22 @@ const RootNavigator = () => {
           <Stack.Screen name={'Auth'} component={AuthNavigator} />
         ) : (
           <>
-            {userType === 'editor' && !user ? (
-              <Stack.Screen
-                name={screens.CREATE_PROFILE}
-                component={CreateEditorProfile}
-                options={{
-                  headerShown: true,
-                  header: ({route}) => <CreateProfileHeader route={route} />,
-                }}
-              />
+            {userType === 'editor' ? (
+              !user ? (
+                <Stack.Screen
+                  name={screens.CREATE_PROFILE}
+                  component={CreateEditorProfile}
+                  options={{
+                    headerShown: true,
+                    header: ({route}) => <CreateProfileHeader route={route} />,
+                  }}
+                />
+              ) : (
+                <Stack.Screen
+                  name={'EditorApp'}
+                  component={EditorBottomTabNavigator}
+                />
+              )
             ) : (
               <>
                 <Stack.Screen name={'App'} component={AppNavigator} />

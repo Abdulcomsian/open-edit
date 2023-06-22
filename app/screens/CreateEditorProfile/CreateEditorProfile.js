@@ -87,7 +87,6 @@ const CreateEditorProfile = () => {
         scrollEnabled={false}
         horizontal
         pagingEnabled
-        // onScroll={handleScroll}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         onMomentumScrollEnd={handleScroll}

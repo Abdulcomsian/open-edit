@@ -6,21 +6,34 @@ import Touchable from '../../components/Touchable/Touchable';
 import BellIcon from '../../assets/svgs/BellIcon';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {colors} from '../../utils/theme';
-import { useDispatch } from "react-redux";
-import { logout } from "../../redux/authSlice";
+import {useDispatch} from 'react-redux';
+import {logout} from '../../redux/authSlice';
+import screens from '../../constants/screens';
 
-const HomeScreenHeader = () => {
+const HomeScreenHeader = ({screenName}) => {
   const {top} = useSafeAreaInsets();
   const dispatch = useDispatch();
 
+  const isEditorHomeScreen = screens.EDITOR_HOME === screenName;
   return (
-    <View style={[styles.parent, {paddingTop: getSafeAreaPadding(top)}]}>
+    <View
+      style={[
+        styles.parent,
+        {paddingTop: getSafeAreaPadding(top)},
+        isEditorHomeScreen && {backgroundColor: '#FAFAFA'},
+      ]}>
       <View>
-        <TextComponent style={{color: '#A2A2A2'}}>
-          Good evening 🖐
+        <TextComponent
+          font={isEditorHomeScreen ? 'medium' : 'regular'}
+          style={{color: isEditorHomeScreen ? colors.textPrimary : '#A2A2A2'}}>
+          {!isEditorHomeScreen ? ' Good evening 🖐' : 'Welcome!'}
         </TextComponent>
         <TextComponent
-          style={{fontSize: getFontSize(29), fontFamily: FONTS.SEMI_BOLD}}>
+          style={{
+            fontSize: getFontSize(isEditorHomeScreen ? 18 : 29),
+            fontFamily: isEditorHomeScreen ? FONTS.BOLD : FONTS.SEMI_BOLD,
+            lineHeight: isEditorHomeScreen ? 25 : 36,
+          }}>
           John Doe
         </TextComponent>
       </View>
