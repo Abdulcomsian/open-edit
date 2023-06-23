@@ -5,6 +5,7 @@ import ScreenHeader from '../components/ScreenHeader/ScreenHeader';
 import EditIcon from '../assets/svgs/EditIcon';
 import {goBack} from '../utils/navigationUtils';
 import JobsScreenHeader from '../screens/JobsScreen/JobsScreenHeader';
+import CreateProfileHeader from '../components/CreateProfileHeader/CreateProfileHeader';
 
 const HeadersMapper = ({route}) => {
   const {name} = route || {};
@@ -31,6 +32,8 @@ const HeadersMapper = ({route}) => {
       case screens.FAVOURITES:
       case screens.MESSAGES:
         return <JobsScreenHeader route={route} />;
+      case screens.PROPOSALS:
+        return <CreateProfileHeader route={route} />;
       default:
         return null;
     }
