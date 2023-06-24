@@ -17,5 +17,6 @@ const screens = {
   PROPOSALS: 'Proposals',
   SHARE_VIDEO: 'Share Video',
   EDITOR_PROFILE: 'Profile',
+  VIDEO: 'Video',
 };
 export default screens;

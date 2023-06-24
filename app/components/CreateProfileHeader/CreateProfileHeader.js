@@ -10,11 +10,10 @@ import {
 import TextComponent from '../TextComponent/TextComponent';
 import ProfileIcon from '../../assets/svgs/ProfileIcon';
 import {colors} from '../../utils/theme';
-import {logToConsole} from '../../configs/ReactotronConfig';
+import Touchable from '../Touchable/Touchable';
 
-const CreateProfileHeader = ({route}) => {
+const CreateProfileHeader = ({route, withLeftIcon = true, RightIcon, onRightIconPress}) => {
   const {signupSteps, activeStep} = route.params || {};
-  logToConsole({activeStep});
   const {name} = route || {};
   const {top} = useSafeAreaInsets();
   const isPreviewHeader = activeStep === 5;
@@ -23,10 +22,17 @@ const CreateProfileHeader = ({route}) => {
       <TextComponent font={'semiBold'} style={styles.title}>
         {isPreviewHeader ? 'Preview Profile' : name}
       </TextComponent>
-      {!isPreviewHeader ? (
+      {!isPreviewHeader && withLeftIcon ? (
         <View style={[styles.profileIconView, {top: getSafeAreaPadding(top)}]}>
           <ProfileIcon />
         </View>
+      ) : null}
+      {RightIcon ? (
+        <Touchable
+          style={[styles.rightIcon, {top: getSafeAreaPadding(top)}]}
+          onPress={onRightIconPress}>
+          <RightIcon />
+        </Touchable>
       ) : null}
       {!isPreviewHeader ? (
         <View style={styles.stepsView}>
@@ -66,6 +72,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  rightIcon: {
+    position: 'absolute',
+    end: 20,
   },
 });
 export default CreateProfileHeader;

@@ -13,6 +13,7 @@ import useUserSelector from '../redux/selectorHooks/useUserSelector';
 import CreateEditorProfile from '../screens/CreateEditorProfile/CreateEditorProfile';
 import CreateProfileHeader from '../components/CreateProfileHeader/CreateProfileHeader';
 import EditorBottomTabNavigator from './EditorBottomTabNavigator';
+import VideoScreen from '../screens/VideoScreen/VideoScreen';
 
 export const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
@@ -68,10 +69,13 @@ const RootNavigator = () => {
                   }}
                 />
               ) : (
-                <Stack.Screen
-                  name={'EditorApp'}
-                  component={EditorBottomTabNavigator}
-                />
+                <>
+                  <Stack.Screen
+                    name={'EditorApp'}
+                    component={EditorBottomTabNavigator}
+                  />
+                  <Stack.Screen name={screens.VIDEO} component={VideoScreen} />
+                </>
               )
             ) : (
               <>

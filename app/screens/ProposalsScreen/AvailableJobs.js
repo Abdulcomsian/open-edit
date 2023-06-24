@@ -77,7 +77,7 @@ const AvailableJobs = () => {
       <View
         style={{
           paddingVertical: 15,
-          width: '90%',
+          width: '95%',
           alignSelf: 'center',
           borderColor: '#56636F',
           borderBottomWidth: 1,
@@ -88,7 +88,7 @@ const AvailableJobs = () => {
             justifyContent: 'space-between',
             alignItems: 'flex-start',
           }}>
-          <TextComponent font={'semiBold'} style={{fontSize: getFontSize(14)}}>
+          <TextComponent font={'semiBold'} style={{fontSize: getFontSize(14), color: '#56636F'}}>
             {item.title}
           </TextComponent>
           <TextComponent

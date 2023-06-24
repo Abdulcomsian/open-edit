@@ -6,6 +6,7 @@ import EditIcon from '../assets/svgs/EditIcon';
 import {goBack} from '../utils/navigationUtils';
 import JobsScreenHeader from '../screens/JobsScreen/JobsScreenHeader';
 import CreateProfileHeader from '../components/CreateProfileHeader/CreateProfileHeader';
+import AddOutline from '../assets/svgs/AddOutline';
 
 const HeadersMapper = ({route}) => {
   const {name} = route || {};
@@ -34,6 +35,10 @@ const HeadersMapper = ({route}) => {
         return <JobsScreenHeader route={route} />;
       case screens.PROPOSALS:
         return <CreateProfileHeader route={route} />;
+      case screens.SHARE_VIDEO:
+        return (
+          <CreateProfileHeader route={route} withLeftIcon={false} RightIcon={() => <AddOutline />} onRightIconPress={() => route.params?.onRightIconPress?.()} />
+        );
       default:
         return null;
     }

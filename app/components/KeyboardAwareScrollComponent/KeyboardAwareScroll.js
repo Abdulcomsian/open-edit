@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 import {colors} from '../../utils/theme';
 
 const KeyboardAwareScroll = ({
-  extraHeight,
+  extraHeight = 50,
   style,
   contentContainerStyle,
   children,
