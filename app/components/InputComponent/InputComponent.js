@@ -100,15 +100,15 @@ const InputComponent = forwardRef(
 
 const styles = StyleSheet.create({
   defaultInputContainer: {
-    height: getVerticalScale(81),
+    height: getMScale(81),
     marginVertical: getVerticalScale(10),
     width: '100%',
   },
   multilineInputContainer: {
-    height: getVerticalScale(125),
+    height: getMScale(125),
   },
   customViewInputContainer: {
-    minHeight: getVerticalScale(125),
+    minHeight: getMScale(125),
     height: 'auto',
   },
   defaultInput: {

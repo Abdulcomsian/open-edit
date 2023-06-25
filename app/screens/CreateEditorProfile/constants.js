@@ -134,10 +134,6 @@ export const signupPages = [
     id: '5',
     key: 'profile',
   },
-  {
-    id: '6',
-    key: 'reviewProfile',
-  },
 ];
 
 export const PORTFOLIO_INPUTS = [

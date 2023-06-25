@@ -4,8 +4,11 @@ import AuthNavigator from './AuthNavigator';
 import useAuthSelector from '../redux/selectorHooks/useAuthSelector';
 import AppNavigator from './AppNavigator';
 import {useRef} from 'react';
-import {navigationRef} from '../utils/navigationUtils';
-import {logNavigationToConsole} from '../configs/ReactotronConfig';
+import {goBack, navigationRef} from '../utils/navigationUtils';
+import {
+  logNavigationToConsole,
+  logToConsole,
+} from '../configs/ReactotronConfig';
 import screens from '../constants/screens';
 
 import FoldersStackNavigator from './FoldersStackNavigator';
@@ -14,6 +17,8 @@ import CreateEditorProfile from '../screens/CreateEditorProfile/CreateEditorProf
 import CreateProfileHeader from '../components/CreateProfileHeader/CreateProfileHeader';
 import EditorBottomTabNavigator from './EditorBottomTabNavigator';
 import VideoScreen from '../screens/VideoScreen/VideoScreen';
+import ReviewEditorProfile from '../screens/ReviewEditorProfile/ReviewEditorProfile';
+import EditIcon from '../assets/svgs/EditIcon';
 
 export const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
@@ -48,6 +53,7 @@ const RootNavigator = () => {
     }
   };
 
+  logToConsole({user, userType, isLoggedIn});
   return (
     <NavigationContainer
       ref={navigationRef}
@@ -60,14 +66,31 @@ const RootNavigator = () => {
           <>
             {userType === 'editor' ? (
               !user ? (
-                <Stack.Screen
-                  name={screens.CREATE_PROFILE}
-                  component={CreateEditorProfile}
-                  options={{
-                    headerShown: true,
-                    header: ({route}) => <CreateProfileHeader route={route} />,
-                  }}
-                />
+                <>
+                  <Stack.Screen
+                    name={screens.CREATE_PROFILE}
+                    component={CreateEditorProfile}
+                    options={{
+                      headerShown: true,
+                      header: ({route}) => (
+                        <CreateProfileHeader route={route} />
+                      ),
+                    }}
+                  />
+                  <Stack.Screen
+                    name={screens.PREVIEW_PROFILE}
+                    component={ReviewEditorProfile}
+                    options={{
+                      headerShown: true,
+                      header: ({route}) => (
+                        <CreateProfileHeader
+                          route={route}
+                          isPreviewHeader
+                        />
+                      ),
+                    }}
+                  />
+                </>
               ) : (
                 <>
                   <Stack.Screen

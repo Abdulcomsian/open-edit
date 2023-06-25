@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  button: {marginTop: getVerticalScale(20)},
+  button: {marginVertical: getVerticalScale(20)},
   priceInput: {marginTop: -20},
   quickDeliveryText: {fontSize: getFontSize(14), marginStart: 10}
 });

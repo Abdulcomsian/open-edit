@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   scrollContainer: {paddingBottom: getVerticalScale(50)},
 
   //-------------------------CREATE SKILLS SET----------------------------
-  inputWrapperAnimatedView: {marginTop: getVerticalScale(isIos ? 12 : 22)},
+  inputWrapperAnimatedView: {marginTop: getMScale(1)},
   inputContainer: {
     width: '90%',
     alignSelf: 'center',

@@ -1,7 +1,14 @@
 import React from 'react';
 import KeyboardAwareScroll from '../../components/KeyboardAwareScrollComponent/KeyboardAwareScroll';
 import InputComponent from '../../components/InputComponent/InputComponent';
-import {View, Animated, ScrollView, StyleSheet, Platform} from 'react-native';
+import {
+  View,
+  Animated,
+  ScrollView,
+  StyleSheet,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import Touchable from '../../components/Touchable/Touchable';
 import TextComponent from '../../components/TextComponent/TextComponent';
 import ChevronDown from '../../assets/svgs/ChevronDown';
@@ -24,9 +31,7 @@ import {
   skillsSetInputs,
   UNITS,
 } from './constants';
-import {
-  SCREEN_WIDTH,
-} from '../../utils/metrics';
+import {SCREEN_WIDTH} from '../../utils/metrics';
 import {logToConsole} from '../../configs/ReactotronConfig';
 import {colors} from '../../utils/theme';
 import ImageCropPicker from 'react-native-image-crop-picker';
@@ -44,6 +49,8 @@ import EditIcon from '../../assets/svgs/EditIcon';
 import {images} from '../../assets';
 import {useDispatch} from 'react-redux';
 import {setUser} from '../../redux/userSlice';
+import screens from '../../constants/screens';
+import {isIos} from '../../utils/sharedUtils';
 
 const useCreateEditorProfile = () => {
   const [activePage, setActivePage] = useState(0);
@@ -62,27 +69,28 @@ const useCreateEditorProfile = () => {
   const {
     [INPUT_KEYS.TITLE]: title = '',
     [INPUT_KEYS.BIO]: bio = '',
-    [INPUT_KEYS.SERVICE_OFFERINGS]: serviceOfferings,
+    [INPUT_KEYS.SERVICE_OFFERINGS]: serviceOfferings = [],
     [INPUT_KEYS.SKILLS]: skills = [],
-    [INPUT_KEYS.PORTFOLIO_LINK]: portfolioLink,
-    [INPUT_KEYS.PORTFOLIO_VIDEO]: portfolioVideo,
-    [INPUT_KEYS.HOURLY_RATE]: hourlyRate,
-    [INPUT_KEYS.ACTUAL_HOURLY_RATE]: actualHourlyRate,
+    [INPUT_KEYS.PORTFOLIO_LINK]: portfolioLink = '',
+    [INPUT_KEYS.PORTFOLIO_VIDEO]: portfolioVideo = {},
+    [INPUT_KEYS.HOURLY_RATE]: hourlyRate = 0.0,
+    [INPUT_KEYS.ACTUAL_HOURLY_RATE]: actualHourlyRate = 0.0,
     educations = [],
-    [INPUT_KEYS.PROFILE_IMAGE]: profileImage,
-    [INPUT_KEYS.COUNTRY]: country,
-    [INPUT_KEYS.ADDRESS]: address,
-    [INPUT_KEYS.CITY]: city,
-    [INPUT_KEYS.LANGUAGE]: language,
+    [INPUT_KEYS.PROFILE_IMAGE]: profileImage = '',
+    [INPUT_KEYS.COUNTRY]: country = {},
+    [INPUT_KEYS.ADDRESS]: address = '',
+    [INPUT_KEYS.CITY]: city = '',
+    [INPUT_KEYS.LANGUAGE]: language = {},
   } = inputState || {};
 
   const navigation = useNavigation();
   useEffect(() => {
     navigation.setParams({
-      signupSteps: signupPages.filter(item => item.id !== '6'),
+      // signupSteps: signupPages.filter(item => item.id !== '6'),
+      signupSteps: signupPages,
       activeStep: activePage,
     });
-  }, [activePage, navigation, signupPages]);
+  }, [activePage, navigation]);
 
   const handleScroll = event => {
     const {contentOffset} = event.nativeEvent;
@@ -112,6 +120,7 @@ const useCreateEditorProfile = () => {
       ...prevState,
       [INPUT_KEYS.SERVICE_OFFERINGS]: item,
     }));
+    toggleServiceDD();
   };
 
   const handleSuggestedSkillsSelection = suggestedSkill => {
@@ -334,9 +343,9 @@ const useCreateEditorProfile = () => {
           return (
             <InputComponent
               key={input.id}
-              {...input}
               value={inputState[key]}
               onChangeText={text => handleInputChange(key, text)}
+              {...input}
             />
           );
         })}
@@ -387,7 +396,9 @@ const useCreateEditorProfile = () => {
 
   //-----------------------------------EDUCATION_INFO----------------------------
   useEffect(() => {
-    insertNewEducationItem();
+    if (educations.length === 0) {
+      insertNewEducationItem();
+    }
   }, []);
 
   const handleEducationInputChange = (key, text, index) => {
@@ -421,7 +432,6 @@ const useCreateEditorProfile = () => {
   }, []);
 
   const insertNewEducationItem = () => {
-    const {educations = []} = inputState || {};
     educations.push({
       instituteName: '',
       degreeName: '',
@@ -432,7 +442,6 @@ const useCreateEditorProfile = () => {
   };
 
   const renderEducationInfoSection = () => {
-    const {educations = []} = inputState || {};
     return (
       <KeyboardAwareScroll
         contentContainerStyle={styles.keyboardScrollContentContainer}
@@ -456,7 +465,6 @@ const useCreateEditorProfile = () => {
   };
 
   const renderEducationInfoItem = eduIndex => {
-    const {educations = []} = inputState || {};
     return (
       <>
         {EDUCATION_INPUTS.map(educationInput => {
@@ -498,7 +506,6 @@ const useCreateEditorProfile = () => {
   };
 
   const renderDatePicker = () => {
-    let {educations = []} = inputState || {};
     const {key = '', index = 0} = selectedEducationDateKey || {};
     const selectedDate = educations?.[index]?.[key] ?? new Date();
     return (
@@ -550,14 +557,18 @@ const useCreateEditorProfile = () => {
   };
   const renderHourlyRateInputsSection = () => {
     return (
-      <KeyboardAwareScroll style={{flex: 1}}>
+      <KeyboardAwareScroll
+        style={{flex: 1}}
+        contentContainerStyle={{flexGrow: 1}}>
         {HOURLY_RATE_INPUTS.map(hourlyRateInput => {
           const {key = ''} = hourlyRateInput || {};
           return (
             <Animated.View
               onLayout={event => {
-                const {height, y} = event.nativeEvent.layout || {};
-                setUnitDDVOffset(height + y);
+                if (key === INPUT_KEYS.HOURLY_RATE) {
+                  const {height, y} = event.nativeEvent.layout || {};
+                  setUnitDDVOffset(height + y);
+                }
               }}>
               <InputComponent
                 value={inputState[key]}
@@ -967,7 +978,7 @@ const useCreateEditorProfile = () => {
         <View style={styles.infoSectionContainerRow}>
           <View style={styles.reviewProfileImage}>
             <ImageComponent
-              source={{uri: profileImage}}
+              source={{uri: profileImage || ''}}
               style={styles.reviewProfileImage}
             />
             <EditIcon />
@@ -1107,18 +1118,18 @@ const useCreateEditorProfile = () => {
       <KeyboardAwareScroll
         style={styles.reviewProfileContainer}
         contentContainerStyle={styles.reviewProfileScrollContentContainer}>
-        {renderCompletionMessageView()}
-        <View style={styles.dividerView} />
-        {renderProfileNameAndImageSection()}
-        {renderBioSection()}
-        {renderHorizontalLine()}
-        {renderHourlyRateSection()}
-        {renderHorizontalLine()}
-        {renderLanguageSection()}
-        {renderHorizontalLine()}
-        {renderSkillsSection()}
-        {renderHorizontalLine()}
-        {renderEducationSection()}
+        {/*{renderCompletionMessageView()}*/}
+        {/*<View style={styles.dividerView} />*/}
+        {/*{renderProfileNameAndImageSection()}*/}
+        {/*{renderBioSection()}*/}
+        {/*{renderHorizontalLine()}*/}
+        {/*{renderHourlyRateSection()}*/}
+        {/*{renderHorizontalLine()}*/}
+        {/*{renderLanguageSection()}*/}
+        {/*{renderHorizontalLine()}*/}
+        {/*{renderSkillsSection()}*/}
+        {/*{renderHorizontalLine()}*/}
+        {/*{renderEducationSection()}*/}
         <Button
           title={'Submit Profile'}
           onPress={() => dispatch(setUser(inputState))}
@@ -1157,17 +1168,23 @@ const useCreateEditorProfile = () => {
         index: activePage + 1,
         animated: true,
       });
+    } else {
+      navigation.navigate(screens.PREVIEW_PROFILE, {
+        data: JSON.stringify(inputState),
+      });
     }
-  }, [activePage]);
+  }, [activePage, inputState, navigation]);
 
   const renderButtonJSX = () => {
     return (
-      <Button
-        title={strings.continue}
-        style={styles.button}
-        disabled={!isButtonEnabled}
-        onPress={handleOnPress}
-      />
+      <KeyboardAvoidingView behavior={'height'} style={{flex: 1}}>
+        <Button
+          title={strings.continue}
+          style={styles.button}
+          disabled={!isButtonEnabled}
+          onPress={handleOnPress}
+        />
+      </KeyboardAvoidingView>
     );
   };
   return {

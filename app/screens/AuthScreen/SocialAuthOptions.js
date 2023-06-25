@@ -4,6 +4,7 @@ import CircularIcon from '../../components/CircularIcon/CircularIcon';
 import GoogleLogo from '../../assets/svgs/GoogleLogo';
 import FacebookLogo from '../../assets/svgs/FacebookLogo';
 import AppleLogo from '../../assets/svgs/AppleLogo';
+import {isIos} from '../../utils/sharedUtils';
 
 const SocialAuthOptions = () => {
   return (
@@ -18,11 +19,13 @@ const SocialAuthOptions = () => {
         SVGComponent={() => <FacebookLogo />}
         style={styles.iconStyle}
       />
-      <CircularIcon
-        type={'svg'}
-        SVGComponent={() => <AppleLogo />}
-        style={styles.iconStyle}
-      />
+      {isIos ? (
+        <CircularIcon
+          type={'svg'}
+          SVGComponent={() => <AppleLogo />}
+          style={styles.iconStyle}
+        />
+      ) : null}
     </View>
   );
 };
@@ -36,8 +39,8 @@ const styles = StyleSheet.create({
     paddingVertical: getVerticalScale(20),
   },
   iconStyle: {
-    width: getMScale(58.36),
-    height: getMScale(58.36),
+    width: getMScale(50),
+    height: getMScale(50),
     borderRadius: 30,
     marginHorizontal: getMScale(13),
   },

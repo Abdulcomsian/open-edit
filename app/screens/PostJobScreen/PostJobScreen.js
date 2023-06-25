@@ -121,7 +121,7 @@ const PostJobScreen = () => {
               item.key === INPUT_KEYS.PRICE && styles.priceInput,
             ]}
             value={
-              item.key === INPUT_KEYS.DEADLINE
+              item.key === INPUT_KEYS.DEADLINE && inputState[item.key]
                 ? dayjs(inputState[item.key]).format('DD/MM/YYYY')
                 : inputState[item.key]
             }

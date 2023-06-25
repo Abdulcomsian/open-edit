@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: getVerticalScale(15),
   },
-  nameDescriptionView: {marginStart: getMScale(16), width: '82%'},
+  nameDescriptionView: {marginStart: getMScale(16), width: '80%'},
   nameView: {flexDirection: 'row', alignItems: 'center'},
   nameText: {fontSize: getFontSize(16), lineHeight: 24},
   newIndicatorView: {

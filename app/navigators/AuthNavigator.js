@@ -8,7 +8,7 @@ import CircularIcon from '../components/CircularIcon/CircularIcon';
 import ArrowLeft from '../assets/svgs/ArrowLeft';
 import {goBack} from '../utils/navigationUtils';
 import {colors} from '../utils/theme';
-import { getMScale, getSafeAreaPadding } from "../utils/metrics";
+import {getMScale, getSafeAreaPadding} from '../utils/metrics';
 import VerificationCode from '../screens/VerificationCodeScreen/VerificationCode';
 
 const AuthNavigator = () => {

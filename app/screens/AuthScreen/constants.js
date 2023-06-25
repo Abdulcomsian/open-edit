@@ -2,6 +2,7 @@ import strings from '../../constants/strings';
 import InputProfileIcon from '../../assets/svgs/InputProfileIcon';
 import InputPhoneIcon from '../../assets/svgs/InputPhoneIcon';
 import InputPasswordIcon from '../../assets/svgs/InputPasswordIcon';
+import { Masks } from "react-native-mask-input";
 
 export const authOptions = [
   {text: strings.signup, key: 'signup'},
@@ -33,6 +34,8 @@ export const inputs = [
     blurOnSubmit: false,
     returnKeyType: 'done',
     keyboardType: 'number-pad',
+    isMaskInput: true,
+    mask: Masks.USA_PHONE,
   },
   {
     key: input_keys.password,

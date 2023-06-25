@@ -12,11 +12,13 @@ const screens = {
   POST_JOB: 'Post job',
   REVIEW_DETAILS: 'Review Details',
   CREATE_PROFILE: 'Create Profile',
+  PREVIEW_PROFILE: 'Preview Profile',
   EDITOR_HOME_STACK: 'EditorHomeStack',
   EDITOR_HOME: 'Editor Home',
   PROPOSALS: 'Proposals',
   SHARE_VIDEO: 'Share Video',
   EDITOR_PROFILE: 'Profile',
   VIDEO: 'Video',
+
 };
 export default screens;

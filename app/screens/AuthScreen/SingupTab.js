@@ -49,7 +49,6 @@ const SingUpTab = () => {
         Keyboard.dismiss();
         break;
     }
-    logToConsole({inputsRef});
     nextKey && inputsRef.current?.[nextKey]?.current?.focus?.();
   };
 

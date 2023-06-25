@@ -18,14 +18,14 @@ const ScreenHeader = ({title, RightIcon, onRightIconPress}) => {
 
   return (
     <View style={[styles.parent, {paddingTop: getSafeAreaPadding(top)}]}>
-      <Touchable onPress={goBack}>
+      <Touchable onPress={goBack} style={{position: 'absolute', start: 20, top: getSafeAreaPadding(top - 5)}}>
         <ChevronLeft />
       </Touchable>
       <TextComponent font={'semiBold'} style={{fontSize: getFontSize(18)}}>
         {title}
       </TextComponent>
       {RightIcon ? (
-        <Touchable onPress={onRightIconPress}>
+        <Touchable style={{position: 'absolute', end: 20,top: getSafeAreaPadding(top + 5) }} onPress={onRightIconPress}>
           <RightIcon />
         </Touchable>
       ) : (
@@ -40,8 +40,6 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH,
     backgroundColor: colors.white,
     alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingHorizontal: getMScale(15),
   },
 });

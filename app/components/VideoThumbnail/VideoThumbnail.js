@@ -4,13 +4,23 @@ import {colors} from '../../utils/theme';
 import TextComponent from '../TextComponent/TextComponent';
 import {getFontSize} from '../../utils/metrics';
 import Touchable from '../Touchable/Touchable';
+import {isIos} from '../../utils/sharedUtils';
 
 const VideoThumbnail = ({video, style, onPress}) => {
   return (
     <Touchable
       onPress={onPress}
       activeOpacity={1}
-      style={[{width: 57, height: 57, borderRadius: 10}, style]}>
+      style={[
+        {
+          width: 57,
+          height: 57,
+          borderRadius: 10,
+          borderWidth: !isIos ? 1 : 0,
+          borderColor: !isIos ? colors.border : colors.white,
+        },
+        style,
+      ]}>
       <Video
         source={{uri: video?.path}} // Can be a URL or a local file.
         resizeMode={'cover'}

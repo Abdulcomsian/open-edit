@@ -88,7 +88,9 @@ const AvailableJobs = () => {
             justifyContent: 'space-between',
             alignItems: 'flex-start',
           }}>
-          <TextComponent font={'semiBold'} style={{fontSize: getFontSize(14), color: '#56636F'}}>
+          <TextComponent
+            font={'semiBold'}
+            style={{fontSize: getFontSize(14), color: '#56636F'}}>
             {item.title}
           </TextComponent>
           <TextComponent

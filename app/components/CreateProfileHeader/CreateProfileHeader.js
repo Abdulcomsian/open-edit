@@ -12,11 +12,16 @@ import ProfileIcon from '../../assets/svgs/ProfileIcon';
 import {colors} from '../../utils/theme';
 import Touchable from '../Touchable/Touchable';
 
-const CreateProfileHeader = ({route, withLeftIcon = true, RightIcon, onRightIconPress}) => {
+const CreateProfileHeader = ({
+  route,
+  withLeftIcon = true,
+  RightIcon,
+  onRightIconPress,
+  isPreviewHeader,
+}) => {
   const {signupSteps, activeStep} = route.params || {};
   const {name} = route || {};
   const {top} = useSafeAreaInsets();
-  const isPreviewHeader = activeStep === 5;
   return (
     <View style={[styles.parent, {paddingTop: getSafeAreaPadding(top)}]}>
       <TextComponent font={'semiBold'} style={styles.title}>

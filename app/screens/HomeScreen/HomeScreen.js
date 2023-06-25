@@ -54,8 +54,7 @@ const HomeScreen = () => {
             screen: screens.FOLDER_DETAIL,
             params: {folder: item},
           })
-        }
-        onLongPress={() => dispatch(deleteFolder(id))}>
+        }>
         <FolderIcon />
         <View style={styles.nameDescriptionView}>
           <View style={styles.nameView}>

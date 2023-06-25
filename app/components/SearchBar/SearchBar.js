@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderRadius: 12,
-    height: getVerticalScale(55),
+    height: getMScale(55),
     paddingHorizontal: 16,
   },
   searchInput: {

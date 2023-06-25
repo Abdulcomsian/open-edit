@@ -1,6 +1,5 @@
 import React from 'react';
-import {FlatList, View} from 'react-native';
-import {useRef} from 'react';
+import { Animated, View} from 'react-native';
 import useCreateEditorProfile from './useCreateEditorProfile';
 import styles from './styles';
 import {signupPages} from './constants';
@@ -72,6 +71,8 @@ const CreateEditorProfile = () => {
         return <>{renderProfileSetupSection()}</>;
       case 'reviewProfile':
         return <>{renderReviewProfileSection()}</>;
+      default:
+        return <View/>
     }
   };
   const renderItem = ({item}) => {
@@ -79,7 +80,7 @@ const CreateEditorProfile = () => {
   };
   return (
     <View style={styles.parent}>
-      <FlatList
+      <Animated.FlatList
         ref={flatListRef}
         bounces={false}
         data={signupPages}
@@ -88,8 +89,9 @@ const CreateEditorProfile = () => {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => String(index)}
         onMomentumScrollEnd={handleScroll}
+        onScroll={handleScroll}
         accessibilityRole="list"
       />
     </View>
